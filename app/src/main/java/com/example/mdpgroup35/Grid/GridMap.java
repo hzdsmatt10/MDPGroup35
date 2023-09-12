@@ -79,6 +79,8 @@ public class GridMap extends View {
     private static float cellSize;
     private static final char[] direction = new char[]{'N', 'E', 'S', 'W'};
     private static Cell[][] cells;
+    private String messageToBot;
+
 
 
     private boolean mapDrawn = false;
@@ -1050,6 +1052,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "N", obstacleDirectionCoord.size() + 1);
                 showObstaclePlot(column,row);
+                messageToBot = String.format("Coordinates: (%d, %d), Direction: N", column, row);
+                BluetoothUtils.write(messageToBot.getBytes());
                 this.invalidate();
                 return true;
             }
@@ -1057,7 +1061,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "S", obstacleDirectionCoord.size() + 1);
                 showObstaclePlot(column,row);
-
+                messageToBot = String.format("Coordinates: (%d, %d), Direction: S", column, row);
+                BluetoothUtils.write(messageToBot.getBytes());
                 this.invalidate();
                 return true;
             }
@@ -1065,6 +1070,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "E", obstacleDirectionCoord.size() + 1);
                 showObstaclePlot(column,row);
+                messageToBot = String.format("Coordinates: (%d, %d), Direction: E", column, row);
+                BluetoothUtils.write(messageToBot.getBytes());
 
                 this.invalidate();
                 return true;
@@ -1073,6 +1080,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "W", obstacleDirectionCoord.size() + 1);                    showObstaclePlot(column,row);
                 showObstaclePlot(column,row);
+                messageToBot = String.format("Coordinates: (%d, %d), Direction: W", column, row);
+                BluetoothUtils.write(messageToBot.getBytes());
 
                 this.invalidate();
                 return true;
