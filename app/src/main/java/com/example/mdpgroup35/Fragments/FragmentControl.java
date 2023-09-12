@@ -526,8 +526,10 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
+
                         Action action = new Action(Action.MOVE, "back", 0, Action.CMD_BACK, "0,1,1");
                         String s = action.toJSON();
+                        System.out.println("s is "+ s);
                         movementStatusTextView.setText(action.action);
                         BluetoothUtils.write(s.getBytes());
                     } catch (JSONException e) {
@@ -544,6 +546,7 @@ public class FragmentControl extends Fragment {
                     try {
                         Action action = new Action(Action.MOVE, "forward_right", 90, Action.CMD_FORWARD_RIGHT, "0,1,1");
                         String s = action.toJSON();
+                        System.out.println("s is "+ s);
                         movementStatusTextView.setText(action.action);
                         BluetoothUtils.write(s.getBytes());
                     } catch (JSONException e) {
