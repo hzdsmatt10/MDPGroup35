@@ -51,9 +51,9 @@ public class FragmentControl extends Fragment {
         View root = inflater.inflate(R.layout.fragment_control, container, false);
 
         forwardImageBtn = root.findViewById(R.id.northImageBtn);
-//        rightImageBtn = root.findViewById(R.id.eastImageBtn);
+        rightImageBtn = root.findViewById(R.id.EastImageBtn);
         backwardImageBtn = root.findViewById(R.id.southImageBtn);
-//        leftImageBtn = root.findViewById(R.id.westImageBtn);
+        leftImageBtn = root.findViewById(R.id.WestImageBtn);
         stopImageBtn = root.findViewById(R.id.stopBtn);
 
         forwardRightImageBtn = root.findViewById(R.id.northEastImageBtn);
@@ -126,8 +126,7 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
-                        String message = "tr";
-                        BluetoothUtils.write(message.getBytes());
+
                         Action action = new Action(Action.MOVE, "forward_right", 90, Action.CMD_FORWARD_RIGHT, "0,1,1");
                         String s = action.toJSON();
                         System.out.println("s is "+ s);
@@ -145,8 +144,7 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
-                        String message = "tl";
-                        BluetoothUtils.write(message.getBytes());
+
                         Action action = new Action(Action.MOVE, "forward_left", 90, Action.CMD_FORWARD_LEFT, "0,1,1");
                         String s = action.toJSON();
                         movementStatusTextView.setText(action.action);
@@ -190,27 +188,33 @@ public class FragmentControl extends Fragment {
             }
         });
 
-//        rightImageBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-//                    String tmp = rotateRight;
-//                    movementStatusTextView.setText(rotateRightText);
-//                    BluetoothUtils.write(tmp.getBytes());
-//                }
-//            }
-//        });
-//
-//        leftImageBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-//                    String tmp = rotateLeft;
-//                    movementStatusTextView.setText(rotateLeftText);
-//                    BluetoothUtils.write(tmp.getBytes());
-//                }
-//            }
-//        });
+        rightImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
+                    String message = "tr";
+                    BluetoothUtils.write(message.getBytes());
+
+                    //String tmp = rotateRight;
+                   // movementStatusTextView.setText(rotateRightText);
+                   // BluetoothUtils.write(tmp.getBytes());
+                }
+            }
+        });
+
+        leftImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
+                    String message = "tl";
+                    BluetoothUtils.write(message.getBytes());
+
+                   // String tmp = rotateLeft;
+                  //  movementStatusTextView.setText(rotateLeftText);
+                  //  BluetoothUtils.write(tmp.getBytes());
+                }
+            }
+        });
 
         // Inflate the layout for this fragment
         return root;
