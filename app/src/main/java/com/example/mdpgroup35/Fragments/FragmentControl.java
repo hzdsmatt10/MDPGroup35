@@ -34,37 +34,10 @@ public class FragmentControl extends Fragment {
     Switch autoManualSwitch;
     Button calibrateButton;
     GridMap gridMap;
+    private EditText edCreateMessage;
 
-    private final String STM = "STM,";
 
-    private final String forward = "W";
-    private final String backward = "R";
-    private final String forwardRight = "d";
-    private final String forwardLeft = "a";
-    private final String backwardRight = "e";
-    private final String backwardLeft = "q";
-    private final String rotateRight = "D";
-    private final String rotateLeft = "A";
-    private final String stop = "S";
 
-    private final String forwardText = "Forward";
-    private final String backwardText = "Reverse";
-    private final String forwardRightText = "Forward Right";
-    private final String forwardLeftText = "Forward Left";
-    private final String backwardRightText = "Backward Right";
-    private final String backwardLeftText = "Backward Left";
-    private final String rotateRightText = "Rotate Right";
-    private final String rotateLeftText = "Rotate Left";
-    private final String stopText = "Stop";
-
-    private EditText calibrateForward;
-    private EditText calibrateBackward;
-    private EditText calibrateForwardLeft;
-    private EditText calibrateForwardRight;
-    private EditText calibrateBackwardLeft;
-    private EditText calibrateBackwardRight;
-
-//    private Handler manualControllerHandler = new Handler ();
 
     private final static String TAG = "FragmentControl";
 
@@ -93,401 +66,6 @@ public class FragmentControl extends Fragment {
         movementStatusTextView = root.findViewById(R.id.movementStatusTV);
 
 
-//        calibrateForward = root.findViewById(R.id.calib_F);
-//        calibrateBackward = root.findViewById(R.id.calib_B);
-//        calibrateForwardLeft = root.findViewById(R.id.calib_FL);
-//        calibrateForwardRight = root.findViewById(R.id.calib_FR);
-//        calibrateBackwardLeft= root.findViewById(R.id.calib_BL);
-//        calibrateBackwardRight = root.findViewById(R.id.calib_BR);
-
-
-        // Button Listener
-//        btn_calibrate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showLog("Calibrate Button Clicked");
-//                String calibrateForwardString = calibrateForward.getText().toString();
-//                String calibrateBackwardString = calibrateBackward.getText().toString();
-//                String calibrateForwardLeftString = calibrateForwardLeft.getText().toString();
-//                String calibrateForwardRightString = calibrateForwardRight.getText().toString();
-//                String calibrateBackwardLeftString = calibrateBackwardLeft.getText().toString();
-//                String calibrateBackwardRightString = calibrateBackwardRight.getText().toString();
-//                String message = String.format("F %s,B %s,FR %s,BR %s,FL %s,BL %s", calibrateForwardString, calibrateBackwardString, calibrateForwardRightString, calibrateBackwardRightString, calibrateForwardLeftString, calibrateBackwardLeftString);
-//
-//                try {
-//                    Action.setActionValues(message);
-//                    showToast("Successfully Calibrated!\n"+message);
-//                } catch (Exception e) {
-//                    showToast("Error Calibrating");
-//                }
-//            }
-//        });
-
-
-//        forwardImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, FORWARD";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(forward.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("FORWARD");
-//                    manualControllerHandler.postDelayed(this, 500);
-//                }
-//            };
-//        });
-//
-//        forwardRightImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        manualControllerHandler.removeCallbacks(mAction2);
-//                        manualControllerHandler.removeCallbacks(mAction3);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, FORWARDRIGHT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(forward.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("FORWARDRIGHT");
-//                    manualControllerHandler.postDelayed(mAction2, 300);
-//                }
-//            };
-//            Runnable mAction2 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, FORWARDRIGHT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(turnRight.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("FORWARDRIGHT");
-//                    manualControllerHandler.postDelayed(mAction3, 300);
-//                }
-//            };
-//            Runnable mAction3 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, FORWARDRIGHT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(forward.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("FORWARDRIGHT");
-//                    manualControllerHandler.postDelayed(mAction, 300);
-//                }
-//            };
-//        });
-//
-//        rightImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, RIGHT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(turnRight.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("RIGHT");
-//                    manualControllerHandler.postDelayed(this, 500);
-//                }
-//            };
-//        });
-//
-//        backwardRightImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        manualControllerHandler.removeCallbacks(mAction2);
-//                        manualControllerHandler.removeCallbacks(mAction3);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, BACKWARDRIGHT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(reverse.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("BACKWARDRIGHT");
-//                    manualControllerHandler.postDelayed(mAction2, 300);
-//                }
-//            };
-//            Runnable mAction2 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, BACKWARDRIGHT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(turnRight.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("BACKWARDRIGHT");
-//                    manualControllerHandler.postDelayed(mAction3, 300);
-//                }
-//            };
-//            Runnable mAction3 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, BACKWARDRIGHT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(reverse.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("BACKWARDRIGHT");
-//                    manualControllerHandler.postDelayed(mAction, 300);
-//                }
-//            };
-//        });
-//
-//        backwardImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, BACKWARD";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(reverse.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("BACKWARD");
-//                    manualControllerHandler.postDelayed(this, 500);
-//                }
-//            };
-//        });
-//
-//        backwardLeftImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        manualControllerHandler.removeCallbacks(mAction2);
-//                        manualControllerHandler.removeCallbacks(mAction3);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, BACKWARDLEFT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(reverse.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("BACKWARDLEFT");
-//                    manualControllerHandler.postDelayed(mAction2, 300);
-//                }
-//            };
-//            Runnable mAction2 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, BACKWARDLEFT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(turnLeft.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("BACKWARDLEFT");
-//                    manualControllerHandler.postDelayed(mAction3, 300);
-//                }
-//            };
-//            Runnable mAction3 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, BACKWARDLEFT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(reverse.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("BACKWARDLEFT");
-//                    manualControllerHandler.postDelayed(mAction, 300);
-//                }
-//            };
-//        });
-//
-//        leftImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, LEFT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(turnLeft.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("LEFT");
-//                    manualControllerHandler.postDelayed(this, 500);
-//                }
-//            };
-//        });
-//
-//        forwardLeftImageBtn.setOnTouchListener(new View.OnTouchListener() {
-//
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch(event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        manualControllerHandler.postDelayed(mAction, 10);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        manualControllerHandler.removeCallbacks(mAction);
-//                        manualControllerHandler.removeCallbacks(mAction2);
-//                        manualControllerHandler.removeCallbacks(mAction3);
-//                        break;
-//                }
-//
-//                return true;
-//
-//            }
-//
-//            Runnable mAction = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, FORWARDLEFT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(forward.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("FORWARDLEFT");
-//                    manualControllerHandler.postDelayed(mAction2, 300);
-//                }
-//            };
-//            Runnable mAction2 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, FORWARDLEFT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(turnLeft.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("FORWARDLEFT");
-//                    manualControllerHandler.postDelayed(mAction3, 300);
-//                }
-//            };
-//            Runnable mAction3 = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (autoManualSwitch.isChecked() && BluetoothUtils.getState() == 3) {
-//                        String tmp = "STM, FORWARDLEFT";
-//                        movementStatusTextView.setText(tmp);
-//                        BluetoothUtils.write(forward.getBytes());
-//                        //BluetoothUtils.write(tmp.getBytes());
-//                    }
-//                    showLog("FORWARDLEFT");
-//                    manualControllerHandler.postDelayed(mAction, 300);
-//                }
-//            };
-//        });
 
         stopImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -510,6 +88,8 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
+                        String message = "f";
+                        BluetoothUtils.write(message.getBytes());
                         Action action = new Action(Action.MOVE, "forward", 0, Action.CMD_FORWARD, "0,1,1");
                         String s = action.toJSON();
                         movementStatusTextView.setText(action.action);
@@ -526,6 +106,8 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
+                        String message = "r";
+                        BluetoothUtils.write(message.getBytes());
 
                         Action action = new Action(Action.MOVE, "back", 0, Action.CMD_BACK, "0,1,1");
                         String s = action.toJSON();
@@ -544,6 +126,8 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
+                        String message = "tr";
+                        BluetoothUtils.write(message.getBytes());
                         Action action = new Action(Action.MOVE, "forward_right", 90, Action.CMD_FORWARD_RIGHT, "0,1,1");
                         String s = action.toJSON();
                         System.out.println("s is "+ s);
@@ -561,6 +145,8 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
+                        String message = "tl";
+                        BluetoothUtils.write(message.getBytes());
                         Action action = new Action(Action.MOVE, "forward_left", 90, Action.CMD_FORWARD_LEFT, "0,1,1");
                         String s = action.toJSON();
                         movementStatusTextView.setText(action.action);
@@ -630,13 +216,6 @@ public class FragmentControl extends Fragment {
         return root;
     }
 
-//    private void delay() {
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private static void showLog(String message) {
         Log.d(TAG, message);
