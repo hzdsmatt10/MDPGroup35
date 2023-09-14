@@ -546,7 +546,7 @@ public class GridMap extends View {
         ;
     }
 
-    private void updateRobotAxis(int col, int row, String direction) {
+    public void updateRobotAxis(int col, int row, String direction) {
         TextView xAxisTextView = ((Activity) this.getContext()).findViewById(R.id.xAxisTextView);
         TextView yAxisTextView = ((Activity) this.getContext()).findViewById(R.id.yAxisTextView);
 
@@ -571,7 +571,7 @@ public class GridMap extends View {
         showLog("Exiting setObstacleCoord");
     }
 
-    //TODO:link to bluetooth
+
     public void updateImageWithID(String message) {
         int col;
         int row;
@@ -872,7 +872,7 @@ public class GridMap extends View {
         }
     }
 
-    private void drawRobot(Canvas canvas, int[] curCoord) {
+    public void drawRobot(Canvas canvas, int[] curCoord) {
         showLog("Entering drawObstacleWithDirection");
         RectF rect;
 
@@ -1191,6 +1191,9 @@ public class GridMap extends View {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        System.out.println("update column is "+column);
+                        System.out.println("update column is "+row);
+                        System.out.println("update column is "+direction);
                         updateRobotAxis(column, row, direction);
                     } else {
                         canDrawRobot = false;

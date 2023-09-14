@@ -161,21 +161,21 @@ public class FragmentMessage extends Fragment {
 
         String[] parsed;
         String header;
-        System.out.println("i am in");
+
         try {
-            System.out.println("message is " + message);
+           // System.out.println("message is " + message);
 
             parsed = message.split(" ");
-            System.out.println("parsed is " + parsed);
+            //System.out.println("parsed is " + parsed);
 
             // * TO PAD 6 CHAR HEADER
             header = parsed[0];
-            System.out.println("parsed[0] is " + parsed[0]);
+
         } catch (Exception e) {
             System.out.println("catch");
             header = message;
         }
-        System.out.println("before the switch");
+
         if(header == "ROBOT")
         {
             System.out.println("case 1");
@@ -201,7 +201,7 @@ public class FragmentMessage extends Fragment {
             adapterReceivedMessages.notifyDataSetChanged();
         }
         else {
-            System.out.println("case5");
+           // System.out.println("case5");
             adapterReceivedMessages.add(getCurrentTime() + " : " + message);
             adapterReceivedMessages.notifyDataSetChanged();
         }

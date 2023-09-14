@@ -72,7 +72,7 @@ public class FragmentControl extends Fragment {
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     try {
-                        Action action = new Action("capture", "forward", 10, "010", "0,1,1");
+                        Action action = new Action("capture", "stop", 0, "0", "0,1,1");
                         String s = action.toJSON();
                         movementStatusTextView.setText(action.action);
                         BluetoothUtils.write(s.getBytes());
@@ -192,8 +192,21 @@ public class FragmentControl extends Fragment {
             @Override
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-                    String message = "tr";
-                    BluetoothUtils.write(message.getBytes());
+                    try {
+                        String message = "tr";
+                        BluetoothUtils.write(message.getBytes());
+                        Action action = new Action(Action.MOVE, "right", 90, Action.CMD_BACK_RIGHT, "0,1,1");
+                        String s = action.toJSON();
+                        movementStatusTextView.setText(action.action);
+                        BluetoothUtils.write(s.getBytes());
+                        // String tmp = rotateLeft;
+                        //  movementStatusTextView.setText(rotateLeftText);
+                        //  BluetoothUtils.write(tmp.getBytes());
+                    }
+                    catch(JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
 
                     //String tmp = rotateRight;
                    // movementStatusTextView.setText(rotateRightText);
@@ -206,12 +219,23 @@ public class FragmentControl extends Fragment {
             @Override
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-                    String message = "tl";
-                    BluetoothUtils.write(message.getBytes());
+                    try {
+                        String message = "tl";
+                        BluetoothUtils.write(message.getBytes());
+                        Action action = new Action(Action.MOVE, "left", 90, Action.CMD_BACK_LEFT, "0,1,1");
+                        String s = action.toJSON();
+                        movementStatusTextView.setText(action.action);
+                        BluetoothUtils.write(s.getBytes());
+                        // String tmp = rotateLeft;
+                        //  movementStatusTextView.setText(rotateLeftText);
+                        //  BluetoothUtils.write(tmp.getBytes());
+                    }
+                    catch(JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
 
-                   // String tmp = rotateLeft;
-                  //  movementStatusTextView.setText(rotateLeftText);
-                  //  BluetoothUtils.write(tmp.getBytes());
+
                 }
             }
         });

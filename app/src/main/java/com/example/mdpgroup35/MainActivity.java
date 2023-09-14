@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,6 +49,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_BLUETOOTH_SCAN_PERMISSION_REQUEST = 123;
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private String connectedDevice;
 
     public static GridMap gridMap;
+    private Canvas canvas;
     //for checking point for strategy
     final int SATE_DIST = 1;
     final int MAP_SIZE = 20;
@@ -155,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_READ:
                     Toast.makeText(context, "MESSAGE READ", Toast.LENGTH_SHORT).show();
                     String inputBuffer = (String) message.obj;
-                    System.out.println("i am out");
+
 
                     // Process response message
                     onResponse(inputBuffer);
@@ -166,16 +169,49 @@ public class MainActivity extends AppCompatActivity {
                         startTimerBtn.toggle();
                     }
                     FragmentMessage.addToAdapterReceivedMessages(connectedDevice + ": ", inputBuffer);
+                    int xaxe =0;
+                    int yaxe =0;
+                    char direction='N';
 
                     String[] parsed;
                     String header;
                     try {
                         parsed = inputBuffer.split(" ");
+                        //System.out.println("parsed[0] is " + parsed[0]);
+                        xaxe = Integer.parseInt(parsed[2].substring(1,parsed[2].length()-1));
+
+                        yaxe = Integer.parseInt(parsed[3].substring(0,parsed[3].length()-1));
+
+                        int angle = Integer.parseInt(parsed[4].substring(0,parsed[4].length()-2));
+
+
+                        if (angle==0)
+                        {
+                            direction ='N';
+                        }
+                        else if (angle==90)
+                        {
+                            direction ='E';
+                        } else if (angle==180)
+                        {
+                            direction ='S';
+                        } else if (angle==270)
+                        {
+                            direction ='W';
+                        }
+                        else {
+                            direction ='N';
+                        }
+
+
                         // * TO PAD 6 CHAR HEADER
                         header = parsed[0];
                     } catch (Exception e) {
                         header = inputBuffer;
+
+
                     }
+
 
                     switch (header) {
                         case "ROBOT":
@@ -188,6 +224,15 @@ public class MainActivity extends AppCompatActivity {
                             gridMap.updateImageWithID(inputBuffer);
                             showLog("ENTER TARGET PARSER: " + inputBuffer);
                             break;
+                        case "{\"robotPosition\"":
+
+                            System.out.println("i am in robot position");
+                            System.out.println("xaxe is "+xaxe);
+                            System.out.println("xaxe is "+yaxe);
+                            System.out.println("xaxe is "+direction);
+                            gridMap.setCurCoord(xaxe+1,yaxe+1, String.valueOf(direction));
+                            System.out.println("current coor is " + gridMap.getRobotDirection());
+                            gridMap.updateRobotAxis(xaxe,yaxe,String.valueOf(direction));
                         default:
                             break;
                     }
