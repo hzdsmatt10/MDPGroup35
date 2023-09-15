@@ -79,6 +79,20 @@
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/dirLabelTextView"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:layout_weight="1"
+                        android:background="@color/green_200"
+                        android:gravity="center"
+                        android:text="Dir"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
                 </TableRow>
 
                 <TableRow>
@@ -103,6 +117,18 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="0"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/dirTextView"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="-"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="12sp" />

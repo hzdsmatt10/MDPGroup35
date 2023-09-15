@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
+import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.MainActivity;
 import com.example.mdpgroup35.R;
 import com.example.mdpgroup35.RpiHelper.Action;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.io.OutputStream;
 
+
 public class FragmentMessage extends Fragment {
 
     private ListView listViewSentMessages;
@@ -53,7 +55,6 @@ public class FragmentMessage extends Fragment {
     private static final String TAG = "FragmentMessage";
     private OutputStream outputStream;
     private Handler handler;
-
 
 
 
@@ -155,6 +156,18 @@ public class FragmentMessage extends Fragment {
         adapterSentMessages.notifyDataSetChanged();
     }
 
+    public static void handleTargetMessage(String message) {
+        // Parse the "TARGET" message to extract Obstacle ID and Target ID
+        String[] parts = message.split(",");
+        if (parts.length == 3 && parts[0].equals("TARGET")) {
+            int obstacleId = Integer.parseInt(parts[1].trim());
+            String targetId = parts[2].trim();
+
+            Log.d("YourTag", "Received TARGET message - Obstacle ID: " + obstacleId + ", Target ID: " + targetId);
+        }
+    }
+
+
     public static void addToAdapterReceivedMessages(String owner, String message) {
 
 
@@ -185,6 +198,7 @@ public class FragmentMessage extends Fragment {
         else if(header == "TARGET")
         {
             System.out.println("case 2");
+            //handleTargetMessage(message);
             adapterReceivedMessages.add(getCurrentTime() + " : " + message);
             adapterReceivedMessages.notifyDataSetChanged();
         }

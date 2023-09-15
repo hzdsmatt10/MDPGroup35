@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GridMap extends View {
 
@@ -80,6 +82,8 @@ public class GridMap extends View {
     private static final char[] direction = new char[]{'N', 'E', 'S', 'W'};
     private static Cell[][] cells;
     private String messageToBot;
+    private Map<Integer, String> obstacleTargetMapping = new HashMap<>();
+
 
 
 
@@ -549,9 +553,12 @@ public class GridMap extends View {
     public void updateRobotAxis(int col, int row, String direction) {
         TextView xAxisTextView = ((Activity) this.getContext()).findViewById(R.id.xAxisTextView);
         TextView yAxisTextView = ((Activity) this.getContext()).findViewById(R.id.yAxisTextView);
+        TextView dirTextView = ((Activity) this.getContext()).findViewById(R.id.dirTextView);
 
         xAxisTextView.setText(String.valueOf(col - 1));
         yAxisTextView.setText(String.valueOf(row - 1));
+        String dirText = String.format("%s", direction);
+        dirTextView.setText(dirText);
     }
 
     private void showObstaclePlot(int col, int row){
@@ -842,6 +849,8 @@ public class GridMap extends View {
         Log.d(TAG, message);
     }
 
+
+
     private void drawObstacleWithDirection(Canvas canvas, ArrayList<String[]> obstacleDirectionCoord) {
         showLog("Entering drawObstacleWithDirection");
         RectF rect;
@@ -850,6 +859,26 @@ public class GridMap extends View {
             int col = Integer.parseInt(obstacleDirectionCoord.get(i)[0]);
             int row = convertRow(Integer.parseInt(obstacleDirectionCoord.get(i)[1]));
             rect = new RectF(col * cellSize, row * cellSize, (col + 1) * cellSize, (row + 1) * cellSize);
+
+            String targetId = obstacleDirectionCoord.get(i)[3];
+            String obstacleNumber = obstacleDirectionCoord.get(i)[0];
+            Log.d("TargetID", "Value: " + targetId);
+            Log.d("ObstacleNumber", "Value: " + obstacleNumber);
+
+            // Check if a valid Target ID is present
+            if (!TextUtils.isEmpty(targetId)) {
+                // Display the Target ID if it exists.
+                float textX = cellSize * col + cellSize / 2;
+                float textY = cellSize * row + cellSize / 2;
+                canvas.drawText(targetId, textX, textY, whitePaint);
+            } else {
+                // If no Target ID, display the obstacle number.
+                String obstacleNumberText = obstacleDirectionCoord.get(i)[0]; // Use the obstacle number from the message
+                float textX = cellSize * col + cellSize / 2;
+                float textY = cellSize * row + cellSize / 2;
+                canvas.drawText(obstacleNumberText, textX, textY, whitePaint);
+            }
+
             switch (obstacleDirectionCoord.get(i)[2]) {
                 case "N":
                     obstacleDirectionBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_north_obstacle);
@@ -867,7 +896,7 @@ public class GridMap extends View {
                     break;
             }
             canvas.drawBitmap(obstacleDirectionBitmap, null, rect, null);
-//            canvas.drawText(obstacleDirectionCoord.get(i)[3], cellSize * col + cellSize / 2, cellSize * row + cellSize / 2, whitePaint);
+
             showLog("Exiting drawObstacleWithDirection");
         }
     }
