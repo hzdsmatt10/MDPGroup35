@@ -62,15 +62,6 @@ public class State {
         return String.format("%d,%d,%d", x, y, dir);
     }
 
-    public State copy() {
-        return new State(this.x, this.y, this.dir, this.id, this.name);
-    }
-
-    /**
-     * Returns X Y coordinates with | delimiter
-     *
-     * @return
-     */
     public String getXYPair() {
         return x + ", " + y;
     }

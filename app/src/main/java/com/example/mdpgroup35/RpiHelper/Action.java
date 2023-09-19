@@ -1,14 +1,12 @@
 package com.example.mdpgroup35.RpiHelper;
 
-import static com.example.mdpgroup35.MainActivity.gridMap;
+
 
 import com.example.mdpgroup35.Algo.DijkstraPath;
 import com.example.mdpgroup35.Algo.Node;
 import com.example.mdpgroup35.Algo.STMCommands;
 import com.example.mdpgroup35.Algo.State;
-
 import org.json.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,7 +27,7 @@ public class Action extends Message {
     public static String CMD_FORWARD_ = "0110000";
     public static String CMD_BACK_ = "0140000";
 
-    //    public static String CMD_FORWARD = "0180000";
+
     public static String CMD_BACK = "0200000";
     public static String CMD_FORWARD_RIGHT = "2124020";
     public static String CMD_BACK_RIGHT = "1934520";
@@ -60,16 +58,16 @@ public class Action extends Message {
     public static final String BACK_RIGHT = "back_right";
     public static final String BACK_LEFT = "back_left";
 
-    public String type;
-    public String action;
-    public int length;
-    public int angle;
-    public String distance;
-    public int allowable;
-    public int delay;
-    public String coordinate;
-    public String prevCoordinate;
-    public ArrayList<Action> data;
+    public String type; //A string indicating the type of the action.
+    public String action;//A string describing the action itself.
+    public int length;//An integer representing the length of the action data.
+    public int angle;//An integer representing the angle of the action (used for certain actions).
+    public String distance;//A string representing the distance associated with the action
+    public int allowable;//: An integer representing an allowable threshold.
+    public int delay;//An integer representing a delay associated with the action.
+    public String coordinate;//A string representing a coordinate associated with the action.
+    public String prevCoordinate;//A string representing a previous coordinate (optional).
+    public ArrayList<Action> data;//    An ArrayList of Action objects, allowing for sequences of actions. These fields are used to store information about the action.
 
     public Action(String type, String action, String distance, int delay) {
         this.type = notNull(type);
@@ -109,18 +107,6 @@ public class Action extends Message {
         this.length = this.data.size();
     }
 
-    public Action(String type, String action, int angle, String distance, int allowable, String prevCoordinate,  String coordinate) {
-        this.type = notNull(type);
-        this.action = notNull(action);
-        this.angle = angle;
-        this.delay = 350;
-        this.distance = notNull(distance);
-        this.allowable = allowable;
-        this.coordinate = notNull(coordinate);
-        this.prevCoordinate = notNull(prevCoordinate);
-        this.data = new ArrayList<>();
-        this.length = this.data.size();
-    }
 
 
     public Action(String type, ArrayList<Action> data) {
@@ -136,7 +122,7 @@ public class Action extends Message {
         this.length = this.data.size();
     }
 
-    public static Action getReset() {
+    public static Action getReset() { //resets by creating a new action in a default state
         return new Action(
                 Action.RESET,
                 "",
@@ -145,7 +131,7 @@ public class Action extends Message {
                 "2,2,1"
         );
     }
-
+/*
     public static Action getSpotForwardRight(State origin) {
         ArrayList<Action> actions = new ArrayList<>();
         actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, 0, Action.CMD_SPOT_FORWARD_RIGHT, origin.getCoord()));
@@ -193,7 +179,7 @@ public class Action extends Message {
         actions.add(new Action(Action.MOVE, Action.BACK_LEFT, 0, Action.CMD_SPOT_BACK_LEFT, origin.getCoord()));
         return new Action(Action.SERIES, actions);
     }
-
+*/
 
 
     public static Action slideToLeft(State origin, int correction) {
@@ -263,7 +249,7 @@ public class Action extends Message {
         return String.format("%s | %s", this.action, this.coordinate);
     }
 
-    public static void setActionValues(String commandStr) {
+    public static void setActionValues(String commandStr) {//calibration from the text box
         System.out.println("the string is " + commandStr);
         String[] commands  = commandStr.split(",");
         System.out.println("commands is " + commands);
@@ -322,16 +308,5 @@ public class Action extends Message {
         return childData ? toJSON() : toJSONObject().toString();
     }
 
-    public static Action fromJSON(String jsonString) throws JSONException {
-        JSONObject parser = new JSONObject(jsonString);
-        return new Action(
-                parser.getString("action"),
-                parser.getString("type"),
-                parser.getInt("angle"),
-                parser.getString("distance"),
-                parser.getInt("allowable"),
-                parser.getString("coordinate"),
-                parser.getString("prev_coordinate")
-        );
-    }
+
 }

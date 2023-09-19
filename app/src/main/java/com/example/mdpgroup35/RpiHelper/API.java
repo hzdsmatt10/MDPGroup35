@@ -9,8 +9,12 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-public class API {
+public class API { // simple and reusable way to perform HTTP POST requests to a specific URL using Volley
+    //The Singleton pattern ensures that there is only one instance of the API class throughout the application, and the RequestQueue is initialized once using the init method.
+
+  //  To use this class, you would typically call API.getInstance().init(context) to initialize the RequestQueue and then use API.getInstance().post(jsonObject) to send POST requests with JSON payloads to the specified URL.
     private static API INSTANCE = new API();
+
     private RequestQueue queue;
     private String url;
     private API() {

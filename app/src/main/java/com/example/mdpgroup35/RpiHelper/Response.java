@@ -4,15 +4,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Response extends Message {
-    public int status;
-    public String type;
-    public String action;
-    public String result;
+    public int status;// An integer representing the status of the response.
+    public String type;//A string indicating the type of response.
+    public String action;//A string describing the action associated with the response
+    public String result;//A string representing the result or content of the response.
     public String name;
-    public String coordinate;
-    public String prevCoordinate;
-    public int distance;
+    public String coordinate;//A string storing coordinate information.
+    public String prevCoordinate;//A string storing previous coordinate information (optional).
+    public int distance;//An integer indicating distance (optional)
 
+    /*
     public Response(int status, String type, String action, String result, int distance)  {
         this.status = status;
         this.type = type;
@@ -22,7 +23,8 @@ public class Response extends Message {
         this.name = "";
         this.distance = distance;
     }
-
+*/
+    //multiple constructors to create instaces of the response class
     public Response(int status, String type, String action, String result, String name, String coordinate, int distance)  {
         this.status = status;
         this.type = type;
@@ -44,11 +46,11 @@ public class Response extends Message {
         this.distance = distance;
     }
 
-    public static Response getReset() {
+    public static Response getReset() {//returns a predefined Response object. It appears to be a special response used for resetting certain properties. The returned response has specific default values.
         return new Response(1, "", "", "", "", "2,2,1", 0);
     }
 
-    public String toJSON() throws JSONException {
+    public String toJSON() throws JSONException { //this method converts the Response object into a JSON representation
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", status);
         jsonObject.put("type", type);
@@ -60,7 +62,7 @@ public class Response extends Message {
         return jsonObject.toString();
     }
 
-    public static Response fromJSON(String jsonString) throws JSONException {
+    public static Response fromJSON(String jsonString) throws JSONException { //creates a response object from a JSON string
         JSONObject parser = new JSONObject(jsonString);
         return new Response(
                 parser.getInt("status"),

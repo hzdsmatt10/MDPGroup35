@@ -29,12 +29,11 @@ public class FragmentControl extends Fragment {
 
     ImageButton forwardImageBtn, rightImageBtn, backwardImageBtn, leftImageBtn, stopImageBtn;
     ImageButton forwardRightImageBtn, forwardLeftImageBtn, backwardRightImageBtn, backwardLeftImageBtn;
-    private Button btn_calibrate;
+
     TextView movementStatusTextView;
     Switch autoManualSwitch;
-    Button calibrateButton;
+
     GridMap gridMap;
-    private EditText edCreateMessage;
 
 
 
@@ -47,8 +46,8 @@ public class FragmentControl extends Fragment {
                              Bundle savedInstanceState) {
 
         gridMap = MainActivity.getGridMap();
-
-        View root = inflater.inflate(R.layout.fragment_control, container, false);
+//view is when an xml is inflated
+        View root = inflater.inflate(R.layout.fragment_control, container, false); //inflate.inflate is used to inflate the XML layout file and create a corresponding view hierachy
 
         forwardImageBtn = root.findViewById(R.id.northImageBtn);
         rightImageBtn = root.findViewById(R.id.EastImageBtn);
@@ -61,8 +60,7 @@ public class FragmentControl extends Fragment {
         backwardRightImageBtn = root.findViewById(R.id.southEastImageBtn);
         backwardLeftImageBtn = root.findViewById(R.id.southWestImageBtn);
 
-//        autoManualSwitch = root.findViewById(R.id.autoManualSwitch);
-        //btn_calibrate = root.findViewById(R.id.btn_calibrate);
+
         movementStatusTextView = root.findViewById(R.id.movementStatusTV);
 
 

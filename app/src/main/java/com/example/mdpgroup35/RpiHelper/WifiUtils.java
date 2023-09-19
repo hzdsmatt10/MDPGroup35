@@ -10,9 +10,9 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.List;
 
-public class WifiUtils {
-    private String networkSSID = "rpisquare";
-    private String networkPass = "grp32grp32";
+public class WifiUtils {//utility class for handling Wi-Fi connections in an Android application
+    private String networkSSID = "rpisquare"; //may need to change this
+    private String networkPass = "grp32grp32"; //may need to change this
     private WifiConfiguration conf;
 
     private static WifiUtils INSTANCE;
@@ -25,7 +25,7 @@ public class WifiUtils {
         return INSTANCE;
     }
 
-    private WifiUtils() {
+    private WifiUtils() { //The connect method is used to establish a connection to the specified Wi-Fi network.
         conf = new WifiConfiguration();
         conf.SSID = "\"" + networkSSID + "\"";   // Please note the quotes. String should contain ssid in quotes
         conf.wepKeys[0] = "\"" + networkPass + "\"";
@@ -51,11 +51,11 @@ public class WifiUtils {
 
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         // Turn on wifi
-        wifiManager.setWifiEnabled(true);
-        wifiManager.addNetwork(conf);
+        wifiManager.setWifiEnabled(true); //It ensures that Wi-Fi is enabled (wifiManager.setWifiEnabled(true)) if it's not already enabled.
+        wifiManager.addNetwork(conf);//It adds the WifiConfiguration object (conf) to the list of configured networks using wifiManager.addNetwork(conf)
         List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
         for( WifiConfiguration i : list ) {
-            if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+            if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {//t searches for the network with the SSID matching the target network (networkSSID). If found, it disconnects from the current network (if any), enables the target network, and initiates a reconnection.
                 wifiManager.disconnect();
                 wifiManager.enableNetwork(i.networkId, true);
                 wifiManager.reconnect();

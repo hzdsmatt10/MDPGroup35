@@ -88,7 +88,7 @@ public class GridMap extends View {
 
 
     private boolean mapDrawn = false;
-
+/*
     HashMap<String, Integer> mappedObstacles = new HashMap<String, Integer>() {{
         put("11", R.drawable.obstacle_6);
         put("12", R.drawable.obstacle_7);
@@ -156,10 +156,10 @@ public class GridMap extends View {
 //            R.drawable.obstacle_4,
 //            R.drawable.obstacle_5
 //    };
-
+*/
     // Obstacle mapping
 //    private HashMap<String, State> obstacles = new HashMap<>();
-    private State currentState = new State(0, 0, 0);
+  //  private State currentState = new State(0, 0, 0);
 
     public GridMap(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -597,24 +597,7 @@ public class GridMap extends View {
 
         drawImageNumberCell(col, row, direction, String.valueOf(obstacleId), strImageID);
         showLog("Drawing obstacle ID: " + strImageID + " at " + col + "," + row);
-//        if (checkUnexploredCell(col, row)) {
-//
-//            drawImageNumberCell(col, row, direction, String.valueOf(obstacleId), strImageID);
-//            showLog("Drawing obstacle ID: " + strImageID + " at " + col + "," + row);
-//        } else {
-//            for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
-//                if (obstacleDirectionCoord.get(i)[0].equals(Integer.toString(col)) && obstacleDirectionCoord.get(i)[1].equals(Integer.toString(row))) {
-//                    obstacleDirectionCoord.remove(i);
-//                    drawImageNumberCell(col, row, direction, String.valueOf(obstacleId), strImageID);
-//                    showLog("Drawing obstacle ID: " + strImageID + " at " + col + "," + row);
-//                }
-//            }
-//            String msg = "Error inserting obstacle, already exists at (" + col + "," + row + ") for " + strImageID;
-//            BluetoothUtils.write(msg.getBytes());
-//        }
-//
-//
-//        showLog("Exiting updateImageWithID");
+
     }
 
     public void updateImageWithID(Response res) {
@@ -1394,43 +1377,6 @@ public class GridMap extends View {
 
         showLog("Exiting updateMap");
     }
-
-//    public void handleMessageReceive(String[] input) {
-//        showLog("Entering handleMessage");
-//        switch (input[1]) {
-//            case "Robot":
-//                if (curCoord[0] != -1) {
-//                    int col = Integer.parseInt(input[2]) + 1;
-//                    int row = Integer.parseInt(input[3]) + 1;
-//                    if (col <= COL && row <= ROW && col > 0 && row > 0) {
-//                        setOldRobotCoord(curCoord[0], curCoord[1]);
-//                        setCurCoord(col, row, input[4].toUpperCase());
-//                    }
-//                }
-//                break;
-//            case "ObstacleImg":
-//                int col = Integer.parseInt(input[2]) + 1;
-//                int row = Integer.parseInt(input[3]) + 1;
-//                for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
-//                    int obstacleDirectionCoordCol = 0;
-//                    int obstacleDirectionCoordRow = 0;
-//                    showLog(col + ", " + row + " == " + obstacleDirectionCoord.get(i)[0] + ", " + obstacleDirectionCoord.get(i)[1]);
-//                    try {
-//                        obstacleDirectionCoordCol = Integer.parseInt(obstacleDirectionCoord.get(i)[0]);
-//                        obstacleDirectionCoordRow = Integer.parseInt(obstacleDirectionCoord.get(i)[1]);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    if (obstacleDirectionCoordCol ==  col && obstacleDirectionCoordRow == row) {
-//                        drawImageNumberCell(col, row, input[4]);
-//                    }
-//            }
-//                break;
-//            default:
-//                break;
-//        }
-//        showLog("Exiting handleMessage");
-//    }
 
     private void delay() {
         try {

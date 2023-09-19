@@ -17,10 +17,11 @@ public class STMCommands {
 //                System.out.println("debugging"+i+" "+(i+1));
 
                 if (cur.dir == next.dir) {
-                    if (cur.x == next.x && cur.y == next.y) {
+                    if (cur.x == next.x && cur.y == next.y) {//checking if robot moving in straight line without changing direction
                         continue;
                     } else if ((cur.dir == State.RIGHT & next.x > cur.x) || (cur.dir == State.UP & next.y > cur.y) || (cur.dir == State.LEFT & next.x < cur.x) || (cur.dir == State.DOWN && next.y < cur.y)) {
-                        cmd = Action.FORWARD;
+                        cmd = Action.FORWARD; //if robot direction is right and next node x coordinate is greater than current x coor or direction up and next node y coor greater, direction left and next node x coor smaller or down and next node y-coor smaller
+                        //move forward
                     } else {
                         cmd = Action.BACK;
                     }

@@ -53,8 +53,6 @@ public class FragmentMessage extends Fragment {
     private static ArrayAdapter<String> adapterSentMessages;
     private static ArrayAdapter<String> adapterReceivedMessages;
     private static final String TAG = "FragmentMessage";
-    private OutputStream outputStream;
-    private Handler handler;
 
 
 
@@ -70,7 +68,7 @@ public class FragmentMessage extends Fragment {
         View root = inflater.inflate(R.layout.fragment_message, container, false);
 
         listViewSentMessages = root.findViewById(R.id.list_sent_messages);
-        listViewSentMessages.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        listViewSentMessages.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); //autoscrolling text
 
         listViewReceivedMessages = root.findViewById(R.id.list_received_messages);
         listViewReceivedMessages.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
@@ -123,9 +121,9 @@ public class FragmentMessage extends Fragment {
                     BluetoothUtils.write(message.getBytes());
 
 
-                    Action.setActionValues(message);
+                    Action.setActionValues(message); //for calibration as well
                 } catch (Exception e) {
-                    showToast("Error parsing string");
+                    System.out.println("Non calibrating string");
                 }
             }
 

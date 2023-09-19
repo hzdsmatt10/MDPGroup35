@@ -28,8 +28,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.mdpgroup35.Algo.Capture;
-import com.example.mdpgroup35.Algo.DijkstraPath;
-import com.example.mdpgroup35.Algo.Node;
+
 import com.example.mdpgroup35.Algo.STMCommands;
 import com.example.mdpgroup35.Algo.State;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
@@ -47,8 +46,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -63,14 +61,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.BLUETOOTH_PRIVILEGED
     };
-    private static String[] PERMISSIONS_LOCATION = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-            Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_PRIVILEGED
-    };
+
     private Context context;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothUtils bluetoothUtils;
@@ -163,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     // Process response message
                     onResponse(inputBuffer);
 
-                    if (inputBuffer.equals("s") && running) {
+                    if (inputBuffer.equals("s") && running) { //starts the timer
                         startTimer.stop();
                         running = false;
                         startTimerBtn.toggle();
@@ -175,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
 
                     String[] parsed;
                     String header;
-                    try {
+                    try {//////////////////////////////////////////
+                        ////this section might not need anymore
                         parsed = inputBuffer.split(" ");
                         //System.out.println("parsed[0] is " + parsed[0]);
                         xaxe = Integer.parseInt(parsed[2].substring(1,parsed[2].length()-1));
@@ -224,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                             gridMap.updateImageWithID(inputBuffer);
                             showLog("ENTER TARGET PARSER: " + inputBuffer);
                             break;
-                        case "{\"robotPosition\"":
+                        case "{\"robotPosition\"": //may delete, used for AMD tool only
 
                             System.out.println("i am in robot position");
                             System.out.println("xaxe is "+xaxe);
@@ -284,14 +276,14 @@ public class MainActivity extends AppCompatActivity {
         int dir = Integer.parseInt(parsed[2]);
         State robotCoord = new State(col, row, dir);
 
-        String[] obstacleParsed = res.coordinate.split(",");
+        String[] obstacleParsed = res.coordinate.split(",+");
         int oCol = Integer.parseInt(obstacleParsed[0]);
         int oRow = Integer.parseInt(obstacleParsed[1]);
         int oDir = Integer.parseInt(obstacleParsed[2]);
         State obstacleCoord = new State(oCol, oRow, oDir);
 
         boolean fail = res.status != 1 || res.result.equalsIgnoreCase("10") || res.result.equalsIgnoreCase("-1");
-
+//res.status != 1 or res.rsults is 10 or -1, if any of these conditions met, proceeds to handle failure
         // Get result from strategy and if it fails
         if (res.action.contains(Action.STRATEGY) &&
                 res.action.split(":")[1].equalsIgnoreCase(Action.FORWARD) &&
@@ -380,11 +372,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Get the previous response to
-     *
-     * @param
-     */
+
     public void strategy(State robotCoord, State obstacleCoord) {
         try {
             Action noop = Action.getInterleaveNoop();
@@ -425,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+/*
     public void forwardStrategy(State robotCoord, State obstacleCoord) {
         Action forward = Action.forwardStrategy(robotCoord, obstacleCoord);
         Action noop = Action.getInterleaveNoop();
@@ -441,13 +429,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Bluetooth response handler
-     *
-     * @param inputBuffer
-     */
+*/
     private void onResponse(String inputBuffer) {
         Response res = null;
         try {
@@ -461,10 +443,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -682,15 +662,15 @@ public class MainActivity extends AppCompatActivity {
         startTimer.setFormat("%s");
         startTimerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {////////////////////////////////////////////THE LOCATION TO RUN THE 2 TASKS
                 tempMsg = "PC,";
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                     if (startTimerBtn.getText().equals("STOP")) {
                         if (exploreTypeBtn.getText().equals("Image Exploration")) {
-                            runFastest();
-//                            runBullseye();
+                            runFastest(); //MAY NEED TO CHANGE THIS
+                            //runBullseye();
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-                            runFastest();
+                            runFastest(); //MAY NEED TO CHANGE THIS
                         }
                         startTimer.setBase(SystemClock.elapsedRealtime());
                         startTimer.start();
