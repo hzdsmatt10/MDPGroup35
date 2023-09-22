@@ -57,6 +57,8 @@ public class BluetoothUtils {
     public static final int STATE_LISTEN = 1;
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;
+    private String receivedMessage; // Add a variable to store the received message
+
 
     private static int state;
 
@@ -339,6 +341,15 @@ attempts to establish a Bluetooth connection with a remote device using the sock
             } catch (IOException e) {
                 showLog( "Could not close the connect socket" );
             }
+        }
+
+        public synchronized String getReceivedMessage() {
+            return receivedMessage;
+        }
+
+        // Setter method for setting the received message
+        private synchronized void setReceivedMessage(String message) {
+            receivedMessage = message;
         }
     }
 

@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_READ:
                     Toast.makeText(context, "MESSAGE READ", Toast.LENGTH_SHORT).show();
                     String inputBuffer = (String) message.obj;
+                    gridMap.handleBluetoothMessage(inputBuffer);
+
 
 
                     // Process response message

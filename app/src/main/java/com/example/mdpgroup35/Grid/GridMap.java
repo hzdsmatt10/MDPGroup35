@@ -26,6 +26,8 @@ import com.example.mdpgroup35.RpiHelper.Response;
 
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +49,8 @@ public class GridMap extends View {
     private Paint exploredColor = new Paint();
     private Paint obstacleDirectionColor = new Paint();
     private Paint fastestPathColor = new Paint();
+    private boolean bluetoothMessageHandled = false; // Class-level variable
+
 
     private static String robotDirection = "None";
     private static int[] startCoord = new int[]{-1, -1};
@@ -831,11 +835,55 @@ public class GridMap extends View {
         Log.d(TAG, message);
     }
 
+    public void handleTargetMessage(String message) {
+        // Parse the "TARGET" message to extract Obstacle Number and Target ID
+        String[] parts = message.split(",");
+        if (parts.length == 3 && parts[0].equals("TARGET")) {
+            int obstacleNumber = Integer.parseInt(parts[1].trim());
+            String targetId = parts[2].trim();
 
+            // Update the obstacleTargetMapping with the new Target ID
+            obstacleTargetMapping.put(obstacleNumber, targetId);
+
+            // Trigger a redraw of the obstacles on the canvas
+            // You can call the method that redraws your obstacles here.
+            // For example: redrawObstacles();
+        }
+    }
+
+    public void handleBluetoothMessage(String bluetoothMessage) {
+        // Split the Bluetooth message by comma to extract the parts
+        bluetoothMessageHandled = true;
+
+        String[] parts = bluetoothMessage.split(",");
+
+        // Check if the message format is correct
+        if (parts.length == 3 && parts[0].trim().equals("TARGET")) {
+            String originalTargetId = parts[1].trim();
+            String newTargetId = parts[2].trim();
+
+            // Iterate through obstacleDirectionCoord to find and update the targetId
+            for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
+                if (obstacleDirectionCoord.get(i)[3].equals(originalTargetId)) {
+                    // Update the targetId
+                    obstacleDirectionCoord.get(i)[3] = newTargetId;
+
+                    // Redraw the canvas to reflect the updated targetId
+                    invalidate();
+                    break; // Exit the loop after the first match is found and updated
+                }
+            }
+        }
+    }
 
     private void drawObstacleWithDirection(Canvas canvas, ArrayList<String[]> obstacleDirectionCoord) {
         showLog("Entering drawObstacleWithDirection");
         RectF rect;
+        Paint paint = new Paint();
+        float largerTextSize = 30f;
+
+
+        //String receivedMessage = BluetoothUtils.getReceivedMessage();
 
         for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
             int col = Integer.parseInt(obstacleDirectionCoord.get(i)[0]);
@@ -846,6 +894,12 @@ public class GridMap extends View {
             String obstacleNumber = obstacleDirectionCoord.get(i)[0];
             Log.d("TargetID", "Value: " + targetId);
             Log.d("ObstacleNumber", "Value: " + obstacleNumber);
+
+          //  if (receivedMessage.startsWith("TARGET")) {
+                // Call the handleTargetMessage method to handle the "TARGET" message
+         //       handleTargetMessage(receivedMessage);
+
+
 
             // Check if a valid Target ID is present
             if (!TextUtils.isEmpty(targetId)) {
@@ -860,6 +914,13 @@ public class GridMap extends View {
                 float textY = cellSize * row + cellSize / 2;
                 canvas.drawText(obstacleNumberText, textX, textY, whitePaint);
             }
+
+            if (bluetoothMessageHandled) {
+                paint.setTextSize(largerTextSize); // Set larger text size
+            }
+
+            bluetoothMessageHandled = false;
+
 
             switch (obstacleDirectionCoord.get(i)[2]) {
                 case "N":
