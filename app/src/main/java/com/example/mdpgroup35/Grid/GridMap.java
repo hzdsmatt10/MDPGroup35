@@ -21,11 +21,10 @@ import androidx.annotation.Nullable;
 import com.example.mdpgroup35.Algo.State;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.R;
-import com.example.mdpgroup35.RpiHelper.API;
-import com.example.mdpgroup35.RpiHelper.Action;
+
 import com.example.mdpgroup35.RpiHelper.Response;
 
-import org.json.JSONException;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
