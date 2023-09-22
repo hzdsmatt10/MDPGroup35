@@ -284,7 +284,7 @@ attempts to establish a Bluetooth connection with a remote device using the sock
     }
 
     public class ConnectedThread extends Thread {
-        private final BluetoothSocket socket; //stores  bluetoothsocket used for commuication with the oonnected bluetooth device, socket which data is sent and received
+        private final BluetoothSocket socket; //stores  bluetoothsocket used for communication with the connected bluetooth device, socket which data is sent and received
         private final InputStream inputStream; //The InputStream is used to receive data from the connected Bluetooth device. It allows you to read data sent by the remote device.
         private final OutputStream outputStream; //The OutputStream is used to send data to the connected Bluetooth device. It allows you to write data that will be transmitted to the remote device.
 

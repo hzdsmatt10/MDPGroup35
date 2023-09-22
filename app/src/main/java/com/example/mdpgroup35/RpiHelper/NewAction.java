@@ -30,14 +30,17 @@ public class NewAction {
 
     public int distance; //may need to change to string  , determines distance to travel
 
+    public int angle; //may need to change to string, determines the angle
+
 
     //Constructor
-    public NewAction(String type, String action, String direction, int distance)
+    public NewAction(String type, String action, String direction, int distance, int angle)
     {
         this.type =notNull(type);
         this.action = notNull(action);
         this.direction =notNull(direction);
         this.distance =distance;
+        this.angle =angle;
 
     }
 
@@ -47,6 +50,7 @@ public class NewAction {
     {
         String temp;
         String distancestring;
+        String anglestring;
 
         if (newaction.distance<10)
         {
@@ -60,7 +64,19 @@ public class NewAction {
             distancestring = String.valueOf(newaction.distance);
         }
 
-        temp = newaction.action + newaction.direction + distancestring;
+        if (newaction.angle<10)
+        {
+            anglestring = "00" + newaction.angle;
+        }
+        else if (newaction.distance<100)
+        {
+            anglestring = "0" + newaction.angle;
+        }
+        else {
+            anglestring = String.valueOf(newaction.action);
+        }
+
+        temp = newaction.action + newaction.direction + distancestring+anglestring;
         System.out.println(temp);
 
 

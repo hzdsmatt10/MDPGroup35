@@ -92,7 +92,7 @@ public class FragmentControl extends Fragment {
                         //Action action = new Action(Action.MOVE, "forward", 0, Action.CMD_FORWARD, "0,1,1");
                        // String s = action.toJSON();
                        // movementStatusTextView.setText(action.action);
-                        NewAction newaction = new NewAction(NewAction.MOVE,"F","C",25);
+                        NewAction newaction = new NewAction(NewAction.MOVE,"F","C",25,0);
                         movementStatusTextView.setText("forward");
                         String s = newaction.convertToSTMFormat(newaction);
                         BluetoothUtils.write(s.getBytes());
@@ -115,7 +115,7 @@ public class FragmentControl extends Fragment {
                        // String s = action.toJSON();
                        // System.out.println("s is "+ s);
                        // movementStatusTextView.setText(action.action);
-                        NewAction newaction = new NewAction(NewAction.MOVE,"B","C",25);
+                        NewAction newaction = new NewAction(NewAction.MOVE,"B","C",25,0);
                         movementStatusTextView.setText("forward");
                         String s = newaction.convertToSTMFormat(newaction);
                         BluetoothUtils.write(s.getBytes());
@@ -137,7 +137,7 @@ public class FragmentControl extends Fragment {
                        // System.out.println("s is "+ s);
                       //  movementStatusTextView.setText(action.action);
 
-                        NewAction newaction = new NewAction(NewAction.MOVE,"F","R",25);
+                        NewAction newaction = new NewAction(NewAction.MOVE,"F","R",25,90);
                         movementStatusTextView.setText("forward right");
                         String s = newaction.convertToSTMFormat(newaction);
                     BluetoothUtils.write(s.getBytes());
@@ -156,7 +156,7 @@ public class FragmentControl extends Fragment {
 
                        // Action action = new Action(Action.MOVE, "forward_left", 90, Action.CMD_FORWARD_LEFT, "0,1,1");
                       //  String s = action.toJSON();
-                        NewAction newaction = new NewAction(NewAction.MOVE,"F","L",25);
+                        NewAction newaction = new NewAction(NewAction.MOVE,"F","L",25,90);
                         movementStatusTextView.setText("forward left");
                         String s = newaction.convertToSTMFormat(newaction);
                         BluetoothUtils.write(s.getBytes());
@@ -175,7 +175,7 @@ public class FragmentControl extends Fragment {
                      //   Action action = new Action(Action.MOVE, "back_right", 90, Action.CMD_BACK_RIGHT, "0,1,1");
                        // String s = action.toJSON();
                        // movementStatusTextView.setText(action.action);
-                        NewAction newaction = new NewAction(NewAction.MOVE,"B","R",25);
+                        NewAction newaction = new NewAction(NewAction.MOVE,"B","R",25,90);
                         movementStatusTextView.setText("backward right");
                         String s = newaction.convertToSTMFormat(newaction);
                         BluetoothUtils.write(s.getBytes());
@@ -194,7 +194,7 @@ public class FragmentControl extends Fragment {
                      //   Action action = new Action(Action.MOVE, "back_left", 90, Action.CMD_BACK_LEFT, "0,1,1");
                        // String s = action.toJSON();
                      //   movementStatusTextView.setText(action.action);
-                        NewAction newaction = new NewAction(NewAction.MOVE,"B","L",25);
+                        NewAction newaction = new NewAction(NewAction.MOVE,"B","L",25,90);
                         movementStatusTextView.setText("backward left");
                         String s = newaction.convertToSTMFormat(newaction);
                         BluetoothUtils.write(s.getBytes());
