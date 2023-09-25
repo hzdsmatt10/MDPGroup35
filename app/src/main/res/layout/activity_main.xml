@@ -374,8 +374,8 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="606dp"
+            android:layout_height="28dp"
             android:layout_centerVertical="false"
             app:layout_constraintBottom_toTopOf="@+id/viewPager"
             app:tabBackground="@color/green_200"
@@ -384,7 +384,8 @@
             app:tabMaxWidth="0dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/black"
-            app:tabTextColor="#474444">
+            app:tabTextColor="#474444"
+            tools:layout_editor_absoluteX="-5dp">
 
 
         </com.google.android.material.tabs.TabLayout>
@@ -392,8 +393,8 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
 
-            android:layout_width="620dp"
-            android:layout_height="170dp"
+            android:layout_width="615dp"
+            android:layout_height="156dp"
             android:layout_below="@+id/tabsLayout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -409,8 +410,8 @@
             <view
                 android:id="@+id/gridView"
                 class="com.example.mdpgroup35.Grid.GridMap"
-                android:layout_width="593dp"
-                android:layout_height="628dp"
+                android:layout_width="588dp"
+                android:layout_height="577dp"
                 android:layout_gravity="center"
                 android:paddingTop="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"

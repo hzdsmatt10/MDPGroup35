@@ -90,7 +90,7 @@ public class BluetoothActivity extends AppCompatActivity {
         }
 
         IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND); //created to specify which Bluetooth-related events the activity is interested in. These filters are used to register a BroadcastReceiver (bluetoothDeviceListener) to listen for Bluetooth device discovery events and the end of discovery.
-        registerReceiver(bluetoothDeviceListener, intentFilter); //dynamically register a broadcast reveiver using this method, you specify the intentfilter that defintes the type of intents the receiver should listen for
+        registerReceiver(bluetoothDeviceListener, intentFilter); //dynamically register a broadcast receiver using this method, you specify the intentfilter that defines the type of intents the receiver should listen for
         IntentFilter intentFilter1 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(bluetoothDeviceListener, intentFilter1);
 

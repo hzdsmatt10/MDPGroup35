@@ -158,8 +158,6 @@ public class BluetoothUtils {
         //Bluetooth connection requests. It creates the socket using a specifified UUID and service name
         //and handles any exceptions that may occur in the process
         private BluetoothServerSocket serverSocket; //store the Bluetooth server socket used for accepting incoming connections4
-
-
         public AcceptThread() { //constructor for accept thread
             BluetoothServerSocket tmp = null;
             //line intializes a temporary Bluetooth server socket variable tmp
