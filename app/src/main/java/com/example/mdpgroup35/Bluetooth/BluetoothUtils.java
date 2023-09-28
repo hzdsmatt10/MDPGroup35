@@ -28,6 +28,7 @@ import android.util.Log;
 
 import com.example.mdpgroup35.MainActivity;
 import com.example.mdpgroup35.RpiHelper.Action;
+import com.example.mdpgroup35.RpiHelper.NewAction;
 
 
 import org.json.JSONException;
@@ -370,6 +371,16 @@ attempts to establish a Bluetooth connection with a remote device using the sock
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
     // remove this if we can use context from the fragmentMessage
+
+    public static void writeNewActions(NewAction newaction) throws InterruptedException {
+        System.out.println(newaction);
+        for(NewAction na : newaction.data)
+        {
+            TimeUnit.MILLISECONDS.sleep(100);
+            BluetoothUtils.write(NewAction.convertToSTMFormat(na).getBytes());
+
+        }
+    }
     public static void write(byte[] out){
         ConnectedThread tmp;
         tmp = connectedThread;

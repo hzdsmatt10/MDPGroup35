@@ -37,6 +37,7 @@ import com.example.mdpgroup35.Fragments.FragmentMessage;
 import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.RpiHelper.API;
 import com.example.mdpgroup35.RpiHelper.Action;
+import com.example.mdpgroup35.RpiHelper.NewAction;
 import com.example.mdpgroup35.RpiHelper.Response;
 import com.example.mdpgroup35.RpiHelper.WifiUtils;
 import com.example.mdpgroup35.Views.ViewPagerAdapter;
@@ -141,13 +142,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case MESSAGE_WRITE:
-                    Toast.makeText(context, "MESSAGE WRITE", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "MESSAGE WRITE", Toast.LENGTH_SHORT).show();
                     byte[] buffer1 = (byte[]) message.obj;
                     String outputBuffer = new String(buffer1);
                     FragmentMessage.addToAdapterSentMessages("Me: ", outputBuffer);
                     break;
                 case MESSAGE_READ:
-                    Toast.makeText(context, "MESSAGE READ", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(context, "MESSAGE READ", Toast.LENGTH_SHORT).show();
                     String inputBuffer = (String) message.obj;
                     gridMap.handleBluetoothMessage(inputBuffer);
 
@@ -162,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
                         startTimerBtn.toggle();
                     }
                     FragmentMessage.addToAdapterReceivedMessages(connectedDevice + ": ", inputBuffer);
-                    int xaxe =0;
-                    int yaxe =0;
-                    char direction='N';
+                    // int xaxe =0;
+                   // int yaxe =0;
+                  //  char direction='N';
 
                     String[] parsed;
                     String header;
@@ -172,13 +173,13 @@ public class MainActivity extends AppCompatActivity {
                         ////this section might not need anymore
                         parsed = inputBuffer.split(" ");
                         //System.out.println("parsed[0] is " + parsed[0]);
-                        xaxe = Integer.parseInt(parsed[2].substring(1,parsed[2].length()-1));
+                       // xaxe = Integer.parseInt(parsed[2].substring(1,parsed[2].length()-1));
 
-                        yaxe = Integer.parseInt(parsed[3].substring(0,parsed[3].length()-1));
+                       // yaxe = Integer.parseInt(parsed[3].substring(0,parsed[3].length()-1));
 
-                        int angle = Integer.parseInt(parsed[4].substring(0,parsed[4].length()-2));
+                       // int angle = Integer.parseInt(parsed[4].substring(0,parsed[4].length()-2));
 
-
+/*
                         if (angle==0)
                         {
                             direction ='N';
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             direction ='N';
                         }
-
+*/
 
                         // * TO PAD 6 CHAR HEADER
                         header = parsed[0];
@@ -205,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
+
+                    System.out.println(header);
 
 
                     switch (header) {
@@ -218,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                             gridMap.updateImageWithID(inputBuffer);
                             showLog("ENTER TARGET PARSER: " + inputBuffer);
                             break;
+                            /*
                         case "{\"robotPosition\"": //may delete, used for AMD tool only
 
                             System.out.println("i am in robot position");
@@ -227,6 +231,20 @@ public class MainActivity extends AppCompatActivity {
                             gridMap.setCurCoord(xaxe+1,yaxe+1, String.valueOf(direction));
                             System.out.println("current coor is " + gridMap.getRobotDirection());
                             gridMap.updateRobotAxis(xaxe,yaxe,String.valueOf(direction));
+*/
+                        case "Nothing_sensed":
+                            break;
+
+                        case "Target_sensed": //may delete, used for AMD tool only
+                            //if it is not it
+                            //NewAction.skirtRight();
+                            //if it is it:
+                            //NewAction.stop()
+                            break;
+
+
+
+
                         default:
                             break;
                     }
@@ -415,23 +433,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-/*
-    public void forwardStrategy(State robotCoord, State obstacleCoord) {
-        Action forward = Action.forwardStrategy(robotCoord, obstacleCoord);
-        Action noop = Action.getInterleaveNoop();
 
-        boolean canMoveForward = canMoveForward(robotCoord);
-
-        try {
-            // Send noop
-            if (canMoveForward)
-                API.getInstance().post(forward.toJSONObject());
-            else
-                API.getInstance().post(noop.toJSONObject());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-*/
     private void onResponse(String inputBuffer) {
         Response res = null;
         try {
@@ -439,7 +441,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (res.type.equalsIgnoreCase(Action.MOVE)) {
                 // Update Move
-                gridMap.updateRobot(res);
+               // gridMap.updateRobot(res);
+                //move forward
             } else if (res.type.equalsIgnoreCase(Action.CAPTURE)) {
                 onResponseCapture(res);
             }
@@ -619,15 +622,32 @@ public class MainActivity extends AppCompatActivity {
         return Action.findShortestPath(start, obstacles);
     }
 
-    private void runBullseye() {
-        isBullseyeDone = false;
-        isBullseyeDone = false;
-        swap = 1;
-        executedOnce = false;
-        moveForward = true;
-        onBullseye(new Response(0, "move", "", "-1", "", Action.BULLSEYE, 1));
-    }
 
+    //////////////////can delete
+    private void runBullseye() {
+      //  isBullseyeDone = false;
+        //BluetoothUtils.write("runBullseye".getBytes());
+
+        //while(handleMessageRead("");)
+      //  swap = 1;
+      //  executedOnce = false;
+      //  moveForward = true;
+
+        //move forward by a bit
+            // capture
+
+            // if image capture
+                //is bullseye
+                    //run skirt
+
+
+
+
+
+
+       // onBullseye(new Response(0, "move", "", "-1", "", Action.BULLSEYE, 1));
+    }
+////////can delete
     private void runImagePath() {
         // Run shortest path
         currentSeriesAction = findShortestPath();
@@ -666,11 +686,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {////////////////////////////////////////////THE LOCATION TO RUN THE 2 TASKS
                 tempMsg = "PC,";
+
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
+
                     if (startTimerBtn.getText().equals("STOP")) {
+
                         if (exploreTypeBtn.getText().equals("Image Exploration")) {
-                            runFastest(); //MAY NEED TO CHANGE THIS
-                            //runBullseye();
+
+
+//to delete once task done////////////////////////////////////
+                            int index=0;
+                            for(State i:gridMap.getObstacles())
+                            {
+                                BluetoothUtils.write(i.sendCoord4times(index+1).getBytes()); //getting the coordinates in the specified format and add them to obstacle list
+                                index++;
+
+                            }
+                ///////////////////////////////////////////
+
+                           // runFastest(); //MAY NEED TO CHANGE THIS
+                            runBullseye();
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
                             runFastest(); //MAY NEED TO CHANGE THIS
                         }
@@ -680,19 +715,22 @@ public class MainActivity extends AppCompatActivity {
                     } else if (startTimerBtn.getText().equals("START")) {
                         if (exploreTypeBtn.getText().equals("Image Exploration")) {
                             tempMsg += "StopIE";
-                            try {
-                                BluetoothUtils.write(Action.getReset().toJSON().getBytes());
+                           // try {
+
+                                System.out.println("debug statement");
+
+                                //BluetoothUtils.write(Action.getReset().toJSON().getBytes());
                                 gridMap.updateRobot(Response.getReset());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                          //  } catch (JSONException e) {
+                           //     e.printStackTrace();
+                           // }
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-                            try {
-                                BluetoothUtils.write(Action.getReset().toJSON().getBytes());
+                            //try {
+                             //   BluetoothUtils.write(Action.getReset().toJSON().getBytes());
                                 gridMap.updateRobot(Response.getReset());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                          //  } catch (JSONException e) {
+                          //      e.printStackTrace();
+                           // }
                         }
                         startTimer.stop();
                         running = false;
@@ -734,6 +772,7 @@ public class MainActivity extends AppCompatActivity {
             enableBluetooth();
             return true;
         } else if (itemId == R.id.menu_disconnect_devices) {
+            BluetoothUtils.write("RESET".getBytes());
             bluetoothUtils.stop();
             return true;
 

@@ -288,17 +288,7 @@ public class GridMap extends View {
 
     public ArrayList<State> getObstacles() {
 
-//        obstacles.add(new State(4, 16, State.DOWN));
-//        obstacles.add(new State(7,8, State.LEFT));
-//        obstacles.add(new State(10, 16, State.LEFT));
-//        obstacles.add(new State(13,5, State.RIGHT));
-//        obstacles.add(new State(14, 12, State.UP));
-//        setObstacleDirectionCoordinate(1, 9, "E", 1);
-//        setObstacleDirectionCoordinate(2, 19, "E", 2);
-//        setObstacleDirectionCoordinate(11, 10, "S", 3);
-//        setObstacleDirectionCoordinate(18, 3, "W", 4);
-//        setObstacleDirectionCoordinate(19, 19, "W", 5);
-//        this.invalidate();
+
         ArrayList<State> obstacles = new ArrayList<>();
 
         for (String[] s : obstacleDirectionCoord)
@@ -1124,8 +1114,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "N", obstacleDirectionCoord.size() + 1);
                 showObstaclePlot(column,row);
-                messageToBot = String.format("Coordinates: (%d, %d), Direction: N", column, row);
-                BluetoothUtils.write(messageToBot.getBytes());
+                //messageToBot = String.format("Coordinates: (%d, %d), Direction: N", column, row);
+                //BluetoothUtils.write(messageToBot.getBytes());
                 this.invalidate();
                 return true;
             }
@@ -1133,8 +1123,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "S", obstacleDirectionCoord.size() + 1);
                 showObstaclePlot(column,row);
-                messageToBot = String.format("Coordinates: (%d, %d), Direction: S", column, row);
-                BluetoothUtils.write(messageToBot.getBytes());
+               // messageToBot = String.format("Coordinates: (%d, %d), Direction: S", column, row);
+               // BluetoothUtils.write(messageToBot.getBytes());
                 this.invalidate();
                 return true;
             }
@@ -1142,8 +1132,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "E", obstacleDirectionCoord.size() + 1);
                 showObstaclePlot(column,row);
-                messageToBot = String.format("Coordinates: (%d, %d), Direction: E", column, row);
-                BluetoothUtils.write(messageToBot.getBytes());
+               // messageToBot = String.format("Coordinates: (%d, %d), Direction: E", column, row);
+               // BluetoothUtils.write(messageToBot.getBytes());
 
                 this.invalidate();
                 return true;
@@ -1152,8 +1142,8 @@ public class GridMap extends View {
                 if (checkUnexploredCell(column, row))
                     this.setObstacleDirectionCoordinate(column, row, "W", obstacleDirectionCoord.size() + 1);                    showObstaclePlot(column,row);
                 showObstaclePlot(column,row);
-                messageToBot = String.format("Coordinates: (%d, %d), Direction: W", column, row);
-                BluetoothUtils.write(messageToBot.getBytes());
+               // messageToBot = String.format("Coordinates: (%d, %d), Direction: W", column, row);
+               // BluetoothUtils.write(messageToBot.getBytes());
 
                 this.invalidate();
                 return true;
