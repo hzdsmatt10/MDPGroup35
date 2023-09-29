@@ -1,13 +1,7 @@
 package com.example.mdpgroup35.RpiHelper;
 
-import com.example.mdpgroup35.Algo.DijkstraPath;
-import com.example.mdpgroup35.Algo.Node;
-import com.example.mdpgroup35.Algo.STMCommands;
-import com.example.mdpgroup35.Algo.State;
-import org.json.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import org.json.JSONException;
+
 public class NewAction {
     //constants Action.type
 

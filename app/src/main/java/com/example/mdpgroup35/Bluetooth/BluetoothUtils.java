@@ -352,7 +352,7 @@ attempts to establish a Bluetooth connection with a remote device using the sock
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////remove after finish up writeactions
     public static void writeActions(Action action) { //this method is responsible for sending a series of Bluetooth messages/actions to a connected Bluetooth device.
 
         try {
@@ -370,7 +370,6 @@ attempts to establish a Bluetooth connection with a remote device using the sock
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // remove this if we can use context from the fragmentMessage
 
     public static void writeNewActions(NewAction newaction) throws InterruptedException {
         System.out.println(newaction);

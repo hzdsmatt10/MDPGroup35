@@ -103,33 +103,21 @@ public class FragmentMessage extends Fragment {
         // set values for movement
         edCreateMessage.setText(Action.getActionValues());
 
-        /////////////////////////////////////////
+
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showLog("sendButton Clicked");
                 String message = edCreateMessage.getText().toString();
-                //System.out.println("message is "+ message);
-
-
                 try {
-                    //FragmentMessage.addToAdapterSentMessages("Me: ", message);
-                   // BluetoothUtils.ConnectedThread tmp;
-                   // tmp = connectedThread;
-                    //outputStream.write(message.getBytes());
-                   //handler.obtainMessage(MainActivity.MESSAGE_WRITE, -1, -1, message.getBytes()).sendToTarget();
                     BluetoothUtils.write(message.getBytes());
-
-
                     Action.setActionValues(message); //for calibration as well
                 } catch (Exception e) {
-                    System.out.println("Non calibrating string");
                 }
             }
 
         });
 
-///////////////////////////////////////////////////////
+
         deleteSentMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,7 +133,6 @@ public class FragmentMessage extends Fragment {
                 adapterReceivedMessages.notifyDataSetChanged();
             }
         });
-
         return root;
     }
 
@@ -154,32 +141,12 @@ public class FragmentMessage extends Fragment {
         adapterSentMessages.notifyDataSetChanged();
     }
 
-    public static void handleTargetMessage(String message) {
-        // Parse the "TARGET" message to extract Obstacle ID and Target ID
-        String[] parts = message.split(",");
-        if (parts.length == 3 && parts[0].equals("TARGET")) {
-            int obstacleId = Integer.parseInt(parts[1].trim());
-            String targetId = parts[2].trim();
-
-            Log.d("YourTag", "Received TARGET message - Obstacle ID: " + obstacleId + ", Target ID: " + targetId);
-        }
-    }
-
 
     public static void addToAdapterReceivedMessages(String owner, String message) {
-
-
-
         String[] parsed;
         String header;
-
         try {
-           // System.out.println("message is " + message);
-
             parsed = message.split(" ");
-            //System.out.println("parsed is " + parsed);
-
-            // * TO PAD 6 CHAR HEADER
             header = parsed[0];
 
         } catch (Exception e) {
@@ -189,10 +156,11 @@ public class FragmentMessage extends Fragment {
 
         if(header == "ROBOT")
         {
-            System.out.println("case 1");
+
             adapterReceivedMessages.add(getCurrentTime() + " : " + message);
             adapterReceivedMessages.notifyDataSetChanged();
         }
+        /* //All these headers need to change/delete
         else if(header == "TARGET")
         {
             System.out.println("case 2");
@@ -212,15 +180,14 @@ public class FragmentMessage extends Fragment {
             adapterReceivedMessages.add(getCurrentTime() + " : " + message);
             adapterReceivedMessages.notifyDataSetChanged();
         }
+        */
+
         else {
            // System.out.println("case5");
             adapterReceivedMessages.add(getCurrentTime() + " : " + message);
             adapterReceivedMessages.notifyDataSetChanged();
         }
-
     }
-
-
     public static String getCurrentTime() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
         Date currentLocalTime = cal.getTime();
@@ -229,9 +196,6 @@ public class FragmentMessage extends Fragment {
         return date.format(currentLocalTime);
     }
 
-    private void showToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
 
     private static void showLog(String message) {
         Log.d(TAG, message);

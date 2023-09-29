@@ -1,4 +1,4 @@
-package com.example.mdpgroup35.Algo;
+package com.example.mdpgroup35.State;
 public class State {
     public int x;
     public int y;

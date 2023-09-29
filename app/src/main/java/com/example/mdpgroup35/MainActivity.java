@@ -27,19 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.example.mdpgroup35.Algo.Capture;
-
-import com.example.mdpgroup35.Algo.STMCommands;
-import com.example.mdpgroup35.Algo.State;
+import com.example.mdpgroup35.State.State;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.Bluetooth.BluetoothActivity;
 import com.example.mdpgroup35.Fragments.FragmentMessage;
 import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.RpiHelper.API;
 import com.example.mdpgroup35.RpiHelper.Action;
-import com.example.mdpgroup35.RpiHelper.NewAction;
 import com.example.mdpgroup35.RpiHelper.Response;
-import com.example.mdpgroup35.RpiHelper.WifiUtils;
 import com.example.mdpgroup35.Views.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -66,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothUtils bluetoothUtils;
-    private WifiUtils wifiUtils;
+
     private API api;
     private static final String TAG = "MainActivity";
 
@@ -94,16 +89,10 @@ public class MainActivity extends AppCompatActivity {
 
     static TextView xAxisTextView, yAxisTextView;
 
-    // TODO: REMOVE after checklist
-    private boolean isBullseyeDone = false;
-    private int swap = 1;
-    // For first initial turn for A5
-    private boolean executedOnce = false;
-    // Dynamic distance for A5
-    private boolean moveForward = true;
+
 
     // STM commands helper
-    STMCommands stm;
+
 
     private int[] tabIcons = {
             R.drawable.ic_baseline_message_24,
@@ -453,62 +442,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void onBullseye(Response res) {
-        if (isBullseyeDone) {
-            return;
-        }
-
-        // if not a delimiter
-        if (!res.coordinate.equalsIgnoreCase(Action.BULLSEYE))
-            return;
-
-        // Check
-        if (!res.result.isEmpty() && !res.result.equalsIgnoreCase(Capture.OBSTACLE) && !res.result.equalsIgnoreCase(Capture.NO_IMAGE)) {
-            isBullseyeDone = true;
-            return;
-        }
-
-        // Turns anti clockwise
-        // Converted actions
-        // FR x3B FL xF BR
-        ArrayList<Action> actions = new ArrayList<>();
-        if (moveForward && res.distance >= 40) {
-            // Stop moving forward
-            moveForward = false;
-        }
-
-        // HARD CODE MOVE FORWARD
-        if (moveForward) {
-            if (swap % 2 != 0) {
-                actions.add(new Action("capture", "", 0, "010", Action.BULLSEYE));
-            } else {
-                actions.add(new Action("move", "forward", 0, Action.CMD_FORWARD, Action.BULLSEYE));
-            }
-            swap++;
-        } else {
-            if (!executedOnce) {
-                executedOnce = true;
-                actions.add(new Action("move", "back", 0, Action.CMD_BACK, ""));
-                actions.add(new Action("move", "back", 0, Action.CMD_BACK, ""));
-            }
-            actions.add(new Action("move", "forward_right", 0, Action.CMD_FORWARD_RIGHT, ""));
-            actions.add(new Action("move", "forward_left", 0, Action.CMD_FORWARD_LEFT, ""));
-            actions.add(new Action("move", "forward", 0, Action.CMD_FORWARD, ""));
-            actions.add(new Action("move", "forward", 0, Action.CMD_FORWARD, ""));
-            actions.add(new Action("move", "forward", 0, Action.CMD_FORWARD, ""));
-            actions.add(new Action("move", "back_right", 0, Action.CMD_BACK_RIGHT, ""));
-            actions.add(new Action("capture", "", 0, "010", Action.BULLSEYE));
-        }
-        // bb fr fl  fff br c |  fr fl fff br c | fr fl fff br c | fr fl fff br c 27
-
-        // Wrapper action api
-        Action action = new Action(Action.SERIES, actions);
-
-        // Send Command
-        BluetoothUtils.writeActions(action);
-
-    }
-
     private void handleMessageRead(String inputBuffer, String[] inputArray) {
         if (inputBuffer.contains("StopIE") && running) {
             startTimer.stop();
@@ -533,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // STM commands helper
-        stm = new STMCommands();
+
 
         context = this;
 
@@ -541,9 +474,6 @@ public class MainActivity extends AppCompatActivity {
         bluetoothUtils = new BluetoothUtils(context, handler);
         initLayout();
 
-        // Wifi
-        wifiUtils = WifiUtils.getInstance();
-        wifiUtils.connect(context);
 
         // API
         api = API.getInstance();

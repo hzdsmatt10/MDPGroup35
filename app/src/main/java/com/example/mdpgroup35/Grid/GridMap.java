@@ -18,16 +18,13 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 
-import com.example.mdpgroup35.Algo.State;
+import com.example.mdpgroup35.State.State;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.R;
 
 import com.example.mdpgroup35.RpiHelper.Response;
 
 
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

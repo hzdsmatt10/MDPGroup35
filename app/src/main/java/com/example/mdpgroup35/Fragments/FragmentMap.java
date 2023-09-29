@@ -21,7 +21,7 @@ public class FragmentMap extends Fragment {
 
     private static final String TAG = "MapFragment";
 
-    Button resetMapBtn, updateMapBtn,resetRobotBtn;
+    Button resetMapBtn,resetRobotBtn;
     ToggleButton setStartPointToggleBtn, setEditToggleBtn, clearToggleBtn, northObstacleToggleBtn, southObstacleToggleBtn, eastObstacleToggleBtn, westObstacleToggleBtn,rotateLeftToggleBtn, rotateRightToggleBtn;
     GridMap gridMap;
 
@@ -46,18 +46,6 @@ public class FragmentMap extends Fragment {
         clearToggleBtn = root.findViewById(R.id.clearToggleBtn);
         setEditToggleBtn = root.findViewById(R.id.setEditToggleBtn);
 
-//        updateMapBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showLog("Clicked updateMapBtn");
-//                showToast("Updating map...");
-//                if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED)
-//                    gridMap.updateMap();
-//                else
-//                    showToast("Not connected. Please connect to a bluetooth device");
-//            }
-//        });
-
         resetMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,8 +63,7 @@ public class FragmentMap extends Fragment {
                 gridMap.resetRobot();
             }
         }));
-//        example for drag and drop
-//        setEditToggleBtn.setOnLongClickListener(v -> {showLog("Clicked!!!!!!!!!!!!!!!!!"); return true;});
+
         setEditToggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
