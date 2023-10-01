@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.R;
-import com.example.mdpgroup35.RpiHelper.Action;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,14 +70,14 @@ public class FragmentMessage extends Fragment {
         });
 
         // set values for movement
-        edCreateMessage.setText(Action.getActionValues());
+        edCreateMessage.setText("");
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String message = edCreateMessage.getText().toString();
                 try {
                     BluetoothUtils.write(message.getBytes());
-                    Action.setActionValues(message); //for calibration as well
+
                 } catch (Exception e) {
                 }
             }

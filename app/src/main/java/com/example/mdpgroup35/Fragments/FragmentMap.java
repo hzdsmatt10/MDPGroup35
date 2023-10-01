@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.MainActivity;
 import com.example.mdpgroup35.R;
