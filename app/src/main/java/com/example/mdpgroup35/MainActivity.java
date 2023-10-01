@@ -32,7 +32,6 @@ import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.Bluetooth.BluetoothActivity;
 import com.example.mdpgroup35.Fragments.FragmentMessage;
 import com.example.mdpgroup35.Grid.GridMap;
-import com.example.mdpgroup35.RpiHelper.API;
 import com.example.mdpgroup35.RpiHelper.Action;
 import com.example.mdpgroup35.RpiHelper.Response;
 import com.example.mdpgroup35.Views.ViewPagerAdapter;
@@ -42,9 +41,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-
-
-
 public class MainActivity extends AppCompatActivity {
     private static final int MY_BLUETOOTH_SCAN_PERMISSION_REQUEST = 123;
     private static String[] PERMISSIONS_STORAGE = {
@@ -57,18 +53,12 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.BLUETOOTH_PRIVILEGED
     };
-
     private Context context;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothUtils bluetoothUtils;
-
-    private API api;
     private static final String TAG = "MainActivity";
-
-
     private final int LOCATION_PERMISSION_REQUEST = 101;
     private final int SELECT_DEVICE = 102;
-
     public static final int MESSAGE_STATE_CHANGED = 0;
     public static final int MESSAGE_READ = 1;
     public static final int MESSAGE_WRITE = 2;
@@ -82,17 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static GridMap gridMap;
     private Canvas canvas;
-    //for checking point for strategy
-    final int SATE_DIST = 1;
-    final int MAP_SIZE = 20;
-    public static int[][] AlgoMap;
+
 
     static TextView xAxisTextView, yAxisTextView;
-
-
-
-    // STM commands helper
-
 
     private int[] tabIcons = {
             R.drawable.ic_baseline_message_24,
@@ -104,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
     ToggleButton startTimerBtn, exploreTypeBtn;
     private Chronometer startTimer;
     private boolean running;
-
-    private Action currentSeriesAction;
-
-    private String tempMsg;
-
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -131,21 +108,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case MESSAGE_WRITE:
-                    //Toast.makeText(context, "MESSAGE WRITE", Toast.LENGTH_SHORT).show();
                     byte[] buffer1 = (byte[]) message.obj;
                     String outputBuffer = new String(buffer1);
                     FragmentMessage.addToAdapterSentMessages("Me: ", outputBuffer);
                     break;
                 case MESSAGE_READ:
-                   // Toast.makeText(context, "MESSAGE READ", Toast.LENGTH_SHORT).show();
                     String inputBuffer = (String) message.obj;
                     gridMap.handleBluetoothMessage(inputBuffer);
-
-
-
                     // Process response message
-                    onResponse(inputBuffer);
-
+                    //onResponse(inputBuffer);
                     if (inputBuffer.equals("s") && running) { //starts the timer
                         startTimer.stop();
                         running = false;
@@ -192,13 +163,9 @@ public class MainActivity extends AppCompatActivity {
                         header = parsed[0];
                     } catch (Exception e) {
                         header = inputBuffer;
-
-
                     }
 
                     System.out.println(header);
-
-
                     switch (header) {
                         case "ROBOT":
                             //if(parsed.length<)
@@ -221,25 +188,13 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("current coor is " + gridMap.getRobotDirection());
                             gridMap.updateRobotAxis(xaxe,yaxe,String.valueOf(direction));
 */
-                        case "Nothing_sensed":
-                            break;
-
-                        case "Target_sensed": //may delete, used for AMD tool only
-                            //if it is not it
-                            //NewAction.skirtRight();
-                            //if it is it:
-                            //NewAction.stop()
-                            break;
-
-
-
-
                         default:
                             break;
                     }
 
                     break;
                 case MESSAGE_READ_STATUS:
+                    /*
                     String inputBufferStatus = (String) message.obj;
                     String inputBufferStatusExtra = null;
                     String[] inputArray = inputBufferStatus.split("\\s*,\\s*");
@@ -261,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
                         FragmentMessage.addToAdapterReceivedMessages(connectedDevice + ": ", inputBufferStatusExtra);
                     }
                     break;
+                    */
+
                 case MESSAGE_DEVICE_NAME:
                     connectedDevice = message.getData().getString(DEVICE_NAME);
                     showLog(connectedDevice);
@@ -272,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     });
-
+/* //may need to reference
     private void onResponseCapture(Response res) {
         int allowance = Action.DISTANCE_ALLOWABLE;
         Action a = null;
@@ -297,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         if (res.action.contains(Action.STRATEGY) &&
                 res.action.split(":")[1].equalsIgnoreCase(Action.FORWARD) &&
                 fail) {
-            backStrategy(robotCoord, obstacleCoord);
+
             return;
         }
 
@@ -307,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                 !res.action.contains(Action.STRATEGY) &&
                 fail
         ) {
-            strategy(robotCoord, obstacleCoord);
+
             return;
         }
 
@@ -333,105 +290,24 @@ public class MainActivity extends AppCompatActivity {
                 a = Action.slideToLeft(robotCoord, correction + 1);
             }
 
-            if (correction >= Action.MAX_CORRECTION || a == null) {
-                api.post(Action.getInterleaveNoop().toJSONObject());
-                return;
-            }
-            api.post(a.toJSONObject());
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+    //    } catch (JSONException e) {
+      //      e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
     }
-
-    private boolean canMoveForward(State robotCoord) {
-        if (robotCoord.dir == 0) {
-            if (checkPoint(robotCoord.x + 1, robotCoord.y, AlgoMap))
-                return false;
-        } else if (robotCoord.dir == 1) {
-            if (checkPoint(robotCoord.x, robotCoord.y + 1, AlgoMap))
-                return false;
-        } else if (robotCoord.dir == 2) {
-            if (checkPoint(robotCoord.x - 1, robotCoord.y, AlgoMap))
-                return false;
-        } else {
-            if (checkPoint(robotCoord.x, robotCoord.y - 1, AlgoMap))
-                return false;
-        }
-        return true;
-    }
-
-    private boolean canMoveBackward(State robotCoord) {
-        if (robotCoord.dir == 0) {
-            if (checkPoint(robotCoord.x - 1, robotCoord.y, AlgoMap))
-                return false;
-        } else if (robotCoord.dir == 1) {
-            if (checkPoint(robotCoord.x, robotCoord.y - 1, AlgoMap))
-                return false;
-        } else if (robotCoord.dir == 2) {
-            if (checkPoint(robotCoord.x + 1, robotCoord.y, AlgoMap))
-                return false;
-        } else {
-            if (checkPoint(robotCoord.x, robotCoord.y + 1, AlgoMap))
-                return false;
-        }
-        return true;
-    }
-
-
-    public void strategy(State robotCoord, State obstacleCoord) {
-        try {
-            Action noop = Action.getInterleaveNoop();
-            if (robotCoord == null || obstacleCoord == null) {
-                API.getInstance().post(noop.toJSONObject());
-                return;
-            }
-            Action forward = Action.forwardStrategy(robotCoord, obstacleCoord);
-            Action backward = Action.backStrategy(robotCoord, obstacleCoord);
-
-            boolean canMoveForward = canMoveForward(robotCoord);
-            boolean canMoveBackward = canMoveBackward(robotCoord);
-            // Send noop
-            if (canMoveForward)
-                API.getInstance().post(forward.toJSONObject());
-            else if (canMoveBackward)
-                API.getInstance().post(backward.toJSONObject());
-            else
-                API.getInstance().post(noop.toJSONObject());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void backStrategy(State robotCoord, State obstacleCoord) {
-        Action backward = Action.backStrategy(robotCoord, obstacleCoord);
-        Action noop = Action.getInterleaveNoop();
-
-        boolean canMoveBackward = canMoveBackward(robotCoord);
-
-        try {
-            // Send noop
-            if (canMoveBackward)
-                API.getInstance().post(backward.toJSONObject());
-            else
-                API.getInstance().post(noop.toJSONObject());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
+*/
+/* //may need to reference
     private void onResponse(String inputBuffer) {
         Response res = null;
         try {
             res = Response.fromJSON(inputBuffer);
 
             if (res.type.equalsIgnoreCase(Action.MOVE)) {
-                // Update Move
-               // gridMap.updateRobot(res);
-                //move forward
+
             } else if (res.type.equalsIgnoreCase(Action.CAPTURE)) {
                 onResponseCapture(res);
             }
@@ -441,50 +317,26 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    private void handleMessageRead(String inputBuffer, String[] inputArray) {
-        if (inputBuffer.contains("StopIE") && running) {
-            startTimer.stop();
-            running = false;
-            startTimerBtn.toggle();
-        } else if (inputBuffer.contains("StopFP") && running) {
-            startTimer.stop();
-            running = false;
-            startTimerBtn.toggle();
-        }
-    }
-
+*/
     private void setState(CharSequence subTitle) {
         showLog("Entering setBluetoothState");
         getSupportActionBar().setSubtitle(subTitle);
         showLog("Exiting setBluetoothState");
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // STM commands helper
-
-
         context = this;
-
         initBluetooth();
         bluetoothUtils = new BluetoothUtils(context, handler);
         initLayout();
-
-
-        // API
-        api = API.getInstance();
-        api.init(context);
 
         // Map
         gridMap = new GridMap(this);
         gridMap = findViewById(R.id.gridView);
         xAxisTextView = findViewById(R.id.xAxisTextView);
         yAxisTextView = findViewById(R.id.yAxisTextView);
-
         // Timer
         startTimerBtn = findViewById(R.id.startTimerBtn);
         startTimer = findViewById(R.id.startTimer);
@@ -492,138 +344,17 @@ public class MainActivity extends AppCompatActivity {
         initStartTimer();
     }
 
-    //functions for initializing map from algo and checking point for strategy
-
-    public boolean checkPoint(int x, int y, int[][] map) {
-        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
-            return false;
-        }
-        if (map[x][y] == 1) {
-            return true;
-        }
-        return false;
-    }
-
-    public int[][] SetUpMap(ArrayList<State> obstacles) {
-        int[][] map = new int[20][20];
-        for (int a = 0; a < 20; a++)
-            for (int b = 0; b < 20; b++)
-                map[a][b] = 0;
-        for (State i : obstacles) {
-            map[i.x][i.y] = 1;
-            for (int dx = -SATE_DIST; dx < SATE_DIST + 1; dx++) {
-                for (int dy = -SATE_DIST; dy < SATE_DIST + 1; dy++) {
-                    if ((i.x + dx) >= MAP_SIZE || (i.x + dx) < 0 || (i.y + dy) >= MAP_SIZE || (i.y + dy) < 0) {
-                        continue;
-                    }
-                    map[i.x + dx][i.y + dy] = 1;
-                }
-            }
-        }
-        for (int i = 0; i < MAP_SIZE; i++) {
-//            map[i][1] = 1;
-            map[i][0] = 1;
-            map[i][MAP_SIZE - 1] = 1;
-            map[0][i] = 1;
-//            map[1][i] = 1;
-            map[MAP_SIZE - 1][i] = 1;
-//            map[MAP_SIZE - 2][i] = 1;
-//            map[i][MAP_SIZE - 2] = 1;
-        }
-        // for i in range(21):
-        // map[20][i]=1
-        // for i in range(21):
-        // map[i][20]=1
-        // print(map)
-        return map;
-    }
 
 
-    private Action findShortestPath() {
-        State start = new State(
-                getGridMap().getCurCoord()[0] - 1,
-                getGridMap().getCurCoord()[0] - 1,
-                State.compassToDirection(getGridMap().getRobotDirection())
-        );
-        ArrayList<State> obstacles = gridMap.getObstacles();
-
-        AlgoMap = SetUpMap(obstacles);
-
-        return Action.findShortestPath(start, obstacles);
-    }
-
-
-    //////////////////can delete
-    private void runBullseye() {
-      //  isBullseyeDone = false;
-        //BluetoothUtils.write("runBullseye".getBytes());
-
-        //while(handleMessageRead("");)
-      //  swap = 1;
-      //  executedOnce = false;
-      //  moveForward = true;
-
-        //move forward by a bit
-            // capture
-
-            // if image capture
-                //is bullseye
-                    //run skirt
-
-
-
-
-
-
-       // onBullseye(new Response(0, "move", "", "-1", "", Action.BULLSEYE, 1));
-    }
-////////can delete
-    private void runImagePath() {
-        // Run shortest path
-        currentSeriesAction = findShortestPath();
-        for (Action a : currentSeriesAction.data) {
-            showLog(a.getCommand());
-        }
-        try {
-            api.post(currentSeriesAction.toJSONObject());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//        BluetoothUtils.writeActions(action);
-    }
-
-    private void runFastest() {
-        ArrayList<Action> actions = new ArrayList<>();
-        actions.add(new Action(Action.MOVE, Action.FORWARD, Action.CMD_FORWARD, 350));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_LEFT, Action.CMD_FORWARD_LEFT, 2000));
-        actions.add(new Action(Action.MOVE, Action.FORWARD, Action.CMD_SPOT_BACK, 350));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, Action.CMD_SPOT_FORWARD_RIGHT, 350));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, Action.CMD_SPOT_FORWARD_RIGHT, 350));
-        actions.add(new Action(Action.MOVE, Action.BACK, Action.CMD_SPOT_BACK, 350));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, Action.CMD_SPOT_FORWARD_RIGHT, 350));
-        Action action = new Action(Action.SERIES, actions);
-        try {
-            api.post(action.toJSONObject());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void initStartTimer() {
+    private void initStartTimer() { ////////////////////dealing with the timer
         showLog("Entering initStartTimer");
         startTimer.setFormat("%s");
         startTimerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {////////////////////////////////////////////THE LOCATION TO RUN THE 2 TASKS
-                tempMsg = "PC,";
-
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-
                     if (startTimerBtn.getText().equals("STOP")) {
-
                         if (exploreTypeBtn.getText().equals("Image Exploration")) {
-
-
 //to delete once task done////////////////////////////////////
                             int index=0;
                             for(State i:gridMap.getObstacles())
@@ -632,35 +363,18 @@ public class MainActivity extends AppCompatActivity {
                                 index++;
 
                             }
-                ///////////////////////////////////////////
-
-                           // runFastest(); //MAY NEED TO CHANGE THIS
-                            runBullseye();
+                /////////////////////////////////////////////////////
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-                            runFastest(); //MAY NEED TO CHANGE THIS
+
                         }
                         startTimer.setBase(SystemClock.elapsedRealtime());
                         startTimer.start();
                         running = true;
                     } else if (startTimerBtn.getText().equals("START")) {
                         if (exploreTypeBtn.getText().equals("Image Exploration")) {
-                            tempMsg += "StopIE";
-                           // try {
-
-                                System.out.println("debug statement");
-
-                                //BluetoothUtils.write(Action.getReset().toJSON().getBytes());
                                 gridMap.updateRobot(Response.getReset());
-                          //  } catch (JSONException e) {
-                           //     e.printStackTrace();
-                           // }
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-                            //try {
-                             //   BluetoothUtils.write(Action.getReset().toJSON().getBytes());
                                 gridMap.updateRobot(Response.getReset());
-                          //  } catch (JSONException e) {
-                          //      e.printStackTrace();
-                           // }
                         }
                         startTimer.stop();
                         running = false;

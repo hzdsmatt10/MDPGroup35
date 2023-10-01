@@ -3,7 +3,7 @@ package com.example.mdpgroup35.RpiHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Response extends Message {
+public class Response extends Message { /////////////might need to refactor the entire thing
     public int status;// An integer representing the status of the response.
     public String type;//A string indicating the type of response.
     public String action;//A string describing the action associated with the response

@@ -1,7 +1,7 @@
 package com.example.mdpgroup35.RpiHelper;
 
 
-
+//reference, delete once done
 import com.example.mdpgroup35.State.Node;
 import com.example.mdpgroup35.State.State;
 import org.json.*;
@@ -129,56 +129,6 @@ public class Action extends Message {
                 "2,2,1"
         );
     }
-/*
-    public static Action getSpotForwardRight(State origin) {
-        ArrayList<Action> actions = new ArrayList<>();
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, 0, Action.CMD_SPOT_FORWARD_RIGHT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, 0, Action.CMD_SPOT_FORWARD_RIGHT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK, 0, Action.CMD_SPOT_BACK, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, 0, Action.CMD_SPOT_FORWARD_RIGHT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, 0, Action.CMD_SPOT_FORWARD_RIGHT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK, 0, Action.CMD_SPOT_BACK, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_RIGHT, 0, Action.CMD_SPOT_FORWARD_RIGHT, origin.getCoord()));
-        return new Action(Action.SERIES, actions);
-    }
-
-    public static Action getSpotBackRight(State origin) {
-        ArrayList<Action> actions = new ArrayList<>();
-        actions.add(new Action(Action.MOVE, Action.BACK_RIGHT, 0, Action.CMD_SPOT_BACK_RIGHT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD, 0, Action.CMD_SPOT_FORWARD, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK_RIGHT, 0, Action.CMD_SPOT_BACK_RIGHT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK_RIGHT, 0, Action.CMD_SPOT_BACK_RIGHT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD, 0, Action.CMD_SPOT_FORWARD, origin.getCoord()));
-
-        actions.add(new Action(Action.MOVE, Action.BACK_RIGHT, 0, Action.CMD_SPOT_BACK_RIGHT, origin.getCoord()));
-        return new Action(Action.SERIES, actions);
-    }
-
-    public static Action getSpotForwardLeft(State origin) {
-        ArrayList<Action> actions = new ArrayList<>();
-        actions.add(new Action(Action.MOVE, Action.FORWARD_LEFT, 0, Action.CMD_SPOT_FORWARD_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_LEFT, 0, Action.CMD_SPOT_FORWARD_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK, 0, Action.CMD_SPOT_BACK, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_LEFT, 0, Action.CMD_SPOT_FORWARD_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_LEFT, 0, Action.CMD_SPOT_FORWARD_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK, 0, Action.CMD_SPOT_BACK, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD_LEFT, 0, Action.CMD_SPOT_FORWARD_LEFT, origin.getCoord()));
-        return new Action(Action.SERIES, actions);
-    }
-
-    public static Action getSpotBackLeft(State origin) {
-        ArrayList<Action> actions = new ArrayList<>();
-        actions.add(new Action(Action.MOVE, Action.BACK_LEFT, 0, Action.CMD_SPOT_BACK_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD, 0, Action.CMD_SPOT_FORWARD, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK_LEFT, 0, Action.CMD_SPOT_BACK_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK_LEFT, 0, Action.CMD_SPOT_BACK_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.FORWARD, 0, Action.CMD_SPOT_FORWARD, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK_LEFT, 0, Action.CMD_SPOT_BACK_LEFT, origin.getCoord()));
-        actions.add(new Action(Action.MOVE, Action.BACK_LEFT, 0, Action.CMD_SPOT_BACK_LEFT, origin.getCoord()));
-        return new Action(Action.SERIES, actions);
-    }
-*/
-
 
     public static Action slideToLeft(State origin, int correction) {
         ArrayList<Action> actions = new ArrayList<>();
@@ -223,21 +173,7 @@ public class Action extends Message {
         return new Action(Action.SERIES_INTERLEAVE, actions);
     }
 
-    public static Action findShortestPath(State start, ArrayList<State> obstacles) {
-        DijkstraPath dp = new DijkstraPath(start);
-        HashMap<String, Object> d = new HashMap<>();
-        // Generate shortest path
-        dp.execute(start, obstacles, d);
-        // Get path sequence
-        ArrayList<State> seq = (ArrayList<State>) d.get("path");
 
-        ArrayList<ArrayList<Node>> fp = (ArrayList<ArrayList<Node>>) d.get("final_path");
-        // Converted actions
-        ArrayList<Action> actions = new ArrayList<>();
-        STMCommands.getSTMCommands(fp, seq, actions);
-
-        return new Action(Action.SERIES, actions);
-    }
 
     public static String getActionValues() {
         return String.format("F %s,B %s,FR %s,BR %s,FL %s,BL %s", CMD_FORWARD, CMD_BACK, CMD_FORWARD_RIGHT, CMD_BACK_RIGHT, CMD_FORWARD_LEFT, CMD_BACK_LEFT);
