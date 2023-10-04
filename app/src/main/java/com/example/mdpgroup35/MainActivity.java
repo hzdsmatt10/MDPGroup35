@@ -1,5 +1,7 @@
 package com.example.mdpgroup35;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +21,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     // Process response message
                     //onResponse(inputBuffer);
                     if (inputBuffer.equals("s") && running) { //starts the timer
+
                         startTimer.stop();
                         running = false;
                         startTimerBtn.toggle();
@@ -328,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+
         initBluetooth();
         bluetoothUtils = new BluetoothUtils(context, handler);
         initLayout();
@@ -338,55 +344,14 @@ public class MainActivity extends AppCompatActivity {
         xAxisTextView = findViewById(R.id.xAxisTextView);
         yAxisTextView = findViewById(R.id.yAxisTextView);
         // Timer
-        startTimerBtn = findViewById(R.id.startTimerBtn);
-        startTimer = findViewById(R.id.startTimer);
-        exploreTypeBtn = findViewById(R.id.exploreTypeBtn);
-        initStartTimer();
+        //startTimerBtn = findViewById(R.id.startTimerBtn);
+        //startTimer = findViewById(R.id.startTimer);
+        //exploreTypeBtn = findViewById(R.id.exploreTypeBtn);
+        //initStartTimer();
     }
 
 
 
-    private void initStartTimer() { ////////////////////dealing with the timer
-        showLog("Entering initStartTimer");
-        startTimer.setFormat("%s");
-        startTimerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {////////////////////////////////////////////THE LOCATION TO RUN THE 2 TASKS
-                if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-                    if (startTimerBtn.getText().equals("STOP")) {
-                        if (exploreTypeBtn.getText().equals("Image Exploration")) {
-//to delete once task done////////////////////////////////////
-                            int index=0;
-                            for(State i:gridMap.getObstacles())
-                            {
-                                BluetoothUtils.write(i.sendCoord4times(index+1).getBytes()); //getting the coordinates in the specified format and add them to obstacle list
-                                index++;
-
-                            }
-                /////////////////////////////////////////////////////
-                        } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-
-                        }
-                        startTimer.setBase(SystemClock.elapsedRealtime());
-                        startTimer.start();
-                        running = true;
-                    } else if (startTimerBtn.getText().equals("START")) {
-                        if (exploreTypeBtn.getText().equals("Image Exploration")) {
-                                gridMap.updateRobot(Response.getReset());
-                        } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-                                gridMap.updateRobot(Response.getReset());
-                        }
-                        startTimer.stop();
-                        running = false;
-                    }
-                } else {
-                    startTimerBtn.toggle();
-                    showToast("Not connected. Please connect to a bluetooth device");
-                }
-            }
-        });
-        showLog("Exiting initStartTimer");
-    }
 
     private void initBluetooth() {
         showLog("Entering initBluetooth");
@@ -538,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
                 tab.setIcon(tabIcons[position]);
             }
             else if(position ==3){
-                tab.setText("Recalibration");
+                tab.setText("Tasks");
                 tab.setIcon(tabIcons[position]);
             }
         }).attach();

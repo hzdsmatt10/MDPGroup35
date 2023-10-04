@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="green_200">#2196F3</color>
+    <color name="green_200">#21c9f3</color>
     <color name="green_500">#4CAF50</color>
     <color name="green_700">#235325</color>
     <color name="teal_100">#B2EBF2</color>
@@ -9,4 +9,11 @@
     <color name="black_24dp">#29FFFFFF</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="lime">#21f38d</color>
+    <color name="pink">#f3219b</color>
+    <color name="turq">#18edd8</color>
+
+
+
+
 </resources>

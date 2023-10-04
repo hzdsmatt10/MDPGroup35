@@ -7,127 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.FragmentRecalibrate"
     android:background="@color/black_24dp">
-    <EditText
-        android:id="@+id/calib_BR"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="1934520"
-        android:maxLength="7"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:background="@drawable/border"
-        android:layout_marginTop="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.378"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/calib_B"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="0200000"
-        android:maxLength="7"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:background="@drawable/border"
-        android:layout_marginTop="115dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.215"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/calib_BL"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="2002540"
-        android:maxLength="7"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:background="@drawable/border"
-        android:layout_marginTop="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/calib_FR"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="2124020"
-        android:maxLength="7"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:background="@drawable/border"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.378"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/calib_FL"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="2052040"
-        android:maxLength="7"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:background="@drawable/border"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/calib_F"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:text="0180000"
-        android:maxLength="7"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_weight="1"
-        android:background="@drawable/border"
-        android:layout_marginTop="45dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.215"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_calibrate"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="100dp"
-        android:background="@color/green_200"
-        android:text="Calibrate"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.807"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/send_coord"
@@ -142,4 +23,149 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/timerCardView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        app:cardBackgroundColor="@color/black_24dp"
+        app:cardCornerRadius="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/exploreTypeCardView"
+        app:layout_constraintTop_toTopOf="@+id/exploreTypeCardView">
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:id="@+id/timerTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:background="@color/black_24dp"
+                    android:gravity="center"
+                    android:text="Timer"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Chronometer
+                    android:id="@+id/startTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <ToggleButton
+                    android:id="@+id/startTimerBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:layout_weight="1"
+                    android:background="@color/lime"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textOff="START"
+                    android:textOn="STOP"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/exploreTypeCardView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/black_24dp"
+        app:cardBackgroundColor="@color/black_24dp"
+        app:cardCornerRadius="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/send_coord"
+        app:layout_constraintTop_toTopOf="@+id/send_coord">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:id="@+id/exploreTypeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/black_24dp"
+                    android:gravity="center"
+                    android:text="Type"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <ToggleButton
+                    android:id="@+id/exploreTypeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/btn_default"
+                    android:backgroundTint="@color/lime"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textOff="Image Exploration"
+                    android:textOn="Fastest Path"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
