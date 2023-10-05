@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Checkable;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,13 +24,11 @@ import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.R;
 
 public class FragmentRecalibrate extends Fragment{
+
     private Button send_coord;
-    private ToggleButton startTimerBtn, exploreTypeBtn;
-    private Chronometer startTimer;
-    private TextView xAxisObstacleTextView;
-    private TextView yAxisObstacleTextView;
+    public static ToggleButton startTimerBtn, exploreTypeBtn;
+    public static Chronometer startTimer;
     private boolean running;
-    private String connectedDevice;
     GridMap gridMap;
 
 

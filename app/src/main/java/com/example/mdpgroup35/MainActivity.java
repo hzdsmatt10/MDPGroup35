@@ -25,6 +25,7 @@ import android.widget.ToggleButton;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.Bluetooth.BluetoothActivity;
 import com.example.mdpgroup35.Fragments.FragmentMessage;
+import com.example.mdpgroup35.Fragments.FragmentRecalibrate;
 import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.Views.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -104,11 +105,12 @@ public class MainActivity extends AppCompatActivity {
                     gridMap.handleBluetoothMessage(inputBuffer);
                     // Process response message
                     //onResponse(inputBuffer);
-                    if (inputBuffer.equals("s") && running) { //starts the timer
+                    if (inputBuffer.equals("end")) {
 
-                        startTimer.stop();
-                        running = false;
-                        startTimerBtn.toggle();
+                        FragmentRecalibrate.startTimer.stop();
+                        if(FragmentRecalibrate.startTimerBtn.isChecked()) {
+                            FragmentRecalibrate.startTimerBtn.toggle();
+                        }
                     }
                     FragmentMessage.addToAdapterReceivedMessages(connectedDevice + ": ", inputBuffer);
                     // int xaxe =0;
