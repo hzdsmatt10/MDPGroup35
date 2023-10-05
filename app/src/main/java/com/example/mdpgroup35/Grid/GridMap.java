@@ -37,7 +37,10 @@ public class GridMap extends View {
     }
 
     private Paint whitePaint = new Paint();
+    private Paint whiteBigPaint = new Paint();
+    private Paint targetPaint = new Paint();
     private Paint whiteTextPaint = new Paint();
+
     private Paint blackPaint = new Paint();
     private Paint obstacleColor = new Paint();
     private Paint robotColor = new Paint();
@@ -84,14 +87,25 @@ public class GridMap extends View {
     private String messageToBot;
     private Map<Integer, String> obstacleTargetMapping = new HashMap<>();
     private boolean mapDrawn = false;
+    Paint currentPaint = whiteBigPaint;
+
     public GridMap(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initMap();
+
         blackPaint.setColor(Color.BLACK);
         blackPaint.setStrokeWidth(3);
         whitePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         whitePaint.setColor(getResources().getColor(R.color.white));
+        whiteBigPaint.setColor(getResources().getColor(R.color.white));
+        targetPaint.setColor(getResources().getColor(R.color.white));
+
         whitePaint.setTextSize(16);
+        whiteBigPaint.setTextSize(16);
+        targetPaint.setTextSize(100);
+        targetPaint.setTextAlign(Paint.Align.CENTER);
+        whiteBigPaint.setTextAlign(Paint.Align.CENTER);
+
         //change Text size of the obstacle
         whiteTextPaint.setColor(getResources().getColor(R.color.white));
         whiteTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -772,6 +786,7 @@ public class GridMap extends View {
         // Split the Bluetooth message by comma to extract the parts
         bluetoothMessageHandled = true;
 
+
         String[] parts = bluetoothMessage.split(",");
 
         // Check if the message format is correct
@@ -786,6 +801,7 @@ public class GridMap extends View {
                     obstacleDirectionCoord.get(i)[3] = newTargetId;
 
                     // Redraw the canvas to reflect the updated targetId
+                    //currentPaint = targetPaint;
                     invalidate();
                     break; // Exit the loop after the first match is found and updated
                 }
@@ -797,16 +813,15 @@ public class GridMap extends View {
         showLog("Entering drawObstacleWithDirection");
         RectF rect;
         Paint paint = new Paint();
-        float largerTextSize = 30f;
 
         // Check if handleBluetoothMessage has been called
-        if (bluetoothMessageHandled) {
-            paint.setTextSize(largerTextSize); // Set larger text size
-            bluetoothMessageHandled = false; // Reset the flag
-        } else {
+        //if (bluetoothMessageHandled) {
+          //  paint.setTextSize(largerTextSize); // Set larger text size
+            //bluetoothMessageHandled = false; // Reset the flag
+        //} else {
             // Set the default text size here if needed
             // paint.setTextSize(defaultTextSize);
-        }
+       // }
 
         for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
             int col = Integer.parseInt(obstacleDirectionCoord.get(i)[0]);
@@ -818,19 +833,11 @@ public class GridMap extends View {
             Log.d("TargetID", "Value: " + targetId);
             Log.d("ObstacleNumber", "Value: " + obstacleNumber);
 
-            // Check if a valid Target ID is present
-            if (!TextUtils.isEmpty(targetId)) {
-                // Display the Target ID if it exists.
+
                 float textX = cellSize * col + cellSize / 2;
                 float textY = cellSize * row + cellSize / 2;
-                canvas.drawText(targetId, textX, textY, whitePaint);
-            } else {
-                // If no Target ID, display the obstacle number.
-                String obstacleNumberText = obstacleDirectionCoord.get(i)[0]; // Use the obstacle number from the message
-                float textX = cellSize * col + cellSize / 2;
-                float textY = cellSize * row + cellSize / 2;
-                canvas.drawText(obstacleNumberText, textX, textY, whitePaint);
-            }
+                canvas.drawText(targetId, textX, textY, whiteBigPaint);
+
 
 
 
@@ -1012,6 +1019,7 @@ public class GridMap extends View {
                         prevObstacleDirectionCoord = new ArrayList<>();
                         prevObstacleDirectionCoord.add(obstacleDirectionCoord.get(i));
                         setEditDirectionObstacleStatus = true;
+
                     }
                 }
 
@@ -1138,6 +1146,7 @@ public class GridMap extends View {
                         }
                         if (column <= COL && row <= ROW)
                             this.setObstacleDirectionCoordinate(column, row, prevObstacleDirectionCoord.get(i)[2], Integer.parseInt(prevObstacleDirectionCoord.get(i)[3]));
+                        showObstaclePlot(column, row);
                     }
                     prevObstacleDirectionCoord = new ArrayList<>();
                     setEditDirectionObstacleStatus = false;
