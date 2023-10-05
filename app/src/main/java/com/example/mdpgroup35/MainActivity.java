@@ -164,7 +164,9 @@ public class MainActivity extends AppCompatActivity {
 
                             break;
                         case "TARGET":
+                            System.out.println("I am in Target");
                             gridMap.updateImageWithID(inputBuffer);
+
                             showLog("ENTER TARGET PARSER: " + inputBuffer);
                             break;
                             /*

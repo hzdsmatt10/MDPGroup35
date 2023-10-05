@@ -913,9 +913,7 @@ public class GridMap extends View {
                     cellPaint.setColor(Color.WHITE);
                     cellPaint.setTextAlign(Paint.Align.CENTER);
                     canvas.drawText(resultId, cellSize * col + cellSize / 2, cellSize * row + cellSize /2, whiteTextPaint);
-//                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
-//                            mappedObstacles.get(resultId));
-//                    canvas.drawBitmap(bitmap, null, rect, null);
+
                 }
             } catch (Exception e) {
 
@@ -1172,20 +1170,7 @@ public class GridMap extends View {
                         if (direction.equals("None")) {
                             direction = "N";
                         }
-                        try {
-                            int directionInt = 0;
-                            if (direction.equals("N")) {
-                                directionInt = 0;
-                            } else if (direction.equals("W")) {
-                                directionInt = 3;
-                            } else if (direction.equals("E")) {
-                                directionInt = 1;
-                            } else if (direction.equals("S")) {
-                                directionInt = 2;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+
                         System.out.println("update column is "+column);
                         System.out.println("update column is "+row);
                         System.out.println("update column is "+direction);
