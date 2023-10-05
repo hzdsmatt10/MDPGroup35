@@ -1,14 +1,10 @@
 package com.example.mdpgroup35;
-
-import static java.security.AccessController.getContext;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
-
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -19,32 +15,20 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import com.example.mdpgroup35.State.State;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.Bluetooth.BluetoothActivity;
 import com.example.mdpgroup35.Fragments.FragmentMessage;
 import com.example.mdpgroup35.Grid.GridMap;
-import com.example.mdpgroup35.RpiHelper.Action;
-import com.example.mdpgroup35.RpiHelper.Response;
 import com.example.mdpgroup35.Views.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final int MY_BLUETOOTH_SCAN_PERMISSION_REQUEST = 123;
     private static String[] PERMISSIONS_STORAGE = {
@@ -69,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int MESSAGE_DEVICE_NAME = 3;
     public static final int MESSAGE_TOAST = 4;
     public static final int MESSAGE_READ_STATUS = 5;
-
     public static final String DEVICE_NAME = "deviceName";
     public static final String TOAST = "toast";
     private String connectedDevice;
@@ -381,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
             enableBluetooth();
             return true;
         } else if (itemId == R.id.menu_disconnect_devices) {
-            BluetoothUtils.write("RESET".getBytes());
+            //BluetoothUtils.write("RESET".getBytes());
             bluetoothUtils.stop();
             return true;
 

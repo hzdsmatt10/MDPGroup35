@@ -74,11 +74,6 @@ public class BluetoothUtils {
 
 
 
-
-
-
-
-
     public BluetoothUtils(Context context, Handler handler) {
         this.context = context;
         this.handler = handler;

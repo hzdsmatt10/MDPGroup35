@@ -1,11 +1,5 @@
 package com.example.mdpgroup35.Fragments;
 
-import static com.example.mdpgroup35.MainActivity.MESSAGE_READ;
-import static com.example.mdpgroup35.MainActivity.MESSAGE_STATE_CHANGED;
-import static com.example.mdpgroup35.MainActivity.MESSAGE_WRITE;
-import static com.example.mdpgroup35.MainActivity.gridMap;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.MainActivity;
-import com.example.mdpgroup35.RpiHelper.Response;
 import com.example.mdpgroup35.State.State;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.R;
@@ -47,16 +40,13 @@ public class FragmentRecalibrate extends Fragment{
         startTimerBtn = root.findViewById(R.id.startTimerBtn);
         startTimer = root.findViewById(R.id.startTimer);
         exploreTypeBtn = root.findViewById(R.id.exploreTypeBtn);
-
-
+        gridMap = MainActivity.getGridMap();
 
         initStartTimer();
-
-
-
         send_coord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println(gridMap);
                 String[] obstacles = new String[gridMap.getObstacles().size()];
                 int index = 0;
                 for (State i : gridMap.getObstacles()) {
@@ -96,28 +86,49 @@ public class FragmentRecalibrate extends Fragment{
             @Override
             public void onClick(View view) {////////////////////////////////////////////THE LOCATION TO RUN THE 2 TASKS
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-                    if (startTimerBtn.getText().equals("STOP")) {
-                        if (exploreTypeBtn.getText().equals("Image Exploration")) {
-//to delete once task done////////////////////////////////////
-                            int index=0;
-                            for(State i:gridMap.getObstacles())
-                            {
-                                BluetoothUtils.write(i.sendCoord4times(index+1).getBytes()); //getting the coordinates in the specified format and add them to obstacle list
-                                index++;
 
+                    if (startTimerBtn.getText().equals("STOP")) {
+                        System.out.println(gridMap);
+
+
+                        if (exploreTypeBtn.getText().equals("Image Exploration")) {
+
+                            System.out.println("grid map is " + gridMap);
+                            String[] obstacles = new String[gridMap.getObstacles().size()];
+                            System.out.println("shag man");
+                            int index = 0;
+                            for (State i : gridMap.getObstacles()) {
+                                obstacles[index] = i.sendCoord2(index + 1); // Getting the coordinates in the specified format and add them to the obstacle list
+                                index++;
                             }
-                            /////////////////////////////////////////////////////
+                            String sendingObstacleArray = "["; // Open the array
+                            for (String x : obstacles) {
+                                sendingObstacleArray = sendingObstacleArray + "[" + x + "],"; // Add obstacles to the array
+                            }
+                            if (obstacles.length != 0) {
+                                sendingObstacleArray = sendingObstacleArray.substring(0, sendingObstacleArray.length() - 1) + "]"; // Remove the last comma and close the array
+                            } else {
+                                sendingObstacleArray = sendingObstacleArray + "]"; // If size is 0, just close the array
+                            }
+                            BluetoothUtils.write(sendingObstacleArray.getBytes());
+                            System.out.println(sendingObstacleArray);
+
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
 
                         }
+
+
+
                         startTimer.setBase(SystemClock.elapsedRealtime());
                         startTimer.start();
                         running = true;
+
+
                     } else if (startTimerBtn.getText().equals("START")) {
                         if (exploreTypeBtn.getText().equals("Image Exploration")) {
-                          //  gridMap.updateRobot(Response.getReset());
+
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-                            //gridMap.updateRobot(Response.getReset());
+
                         }
                         startTimer.stop();
                         running = false;

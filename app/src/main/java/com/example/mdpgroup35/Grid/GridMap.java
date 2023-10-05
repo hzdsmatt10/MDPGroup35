@@ -207,6 +207,7 @@ public class GridMap extends View {
     }
 
     public ArrayList<State> getObstacles() {
+        System.out.println("dEBUG STATEMENT");
 
 
         ArrayList<State> obstacles = new ArrayList<>();

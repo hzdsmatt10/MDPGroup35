@@ -18,17 +18,8 @@ public class FragmentControl extends Fragment {
 
     ImageButton forwardImageBtn, rightImageBtn, backwardImageBtn, leftImageBtn, stopImageBtn;
     ImageButton forwardRightImageBtn, forwardLeftImageBtn, backwardRightImageBtn, backwardLeftImageBtn;
-
     TextView movementStatusTextView;
-
-
     GridMap gridMap;
-
-
-
-
-
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -151,6 +142,8 @@ public class FragmentControl extends Fragment {
         leftImageBtn.setOnClickListener(new View.OnClickListener() {//may remove in the future
             @Override
             public void onClick(View view) {
+
+                System.out.println(gridMap.getObstacles());
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
                BluetoothUtils.write("RESET".getBytes());
                 }

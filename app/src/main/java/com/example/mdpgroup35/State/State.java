@@ -69,7 +69,7 @@ public class State {
 
     public String sendCoord2(int index)
     {
-        return String.format("%d,%d,%d,%d", (x+1)*10, (y+1)*10, dir,index);
+        return String.format("%d,%d,%d,%d", (x)*10, (y)*10, dir,index);
 
 
     }
