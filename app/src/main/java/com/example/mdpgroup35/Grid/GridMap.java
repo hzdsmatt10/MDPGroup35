@@ -42,6 +42,8 @@ public class GridMap extends View {
 
     private Paint blackPaint = new Paint();
     private Paint obstacleColor = new Paint();
+    private Paint obstacleColorTarget = new Paint();
+
     private Paint robotColor = new Paint();
     private Paint startColor = new Paint();
     private Paint unexploredColor = new Paint();
@@ -112,7 +114,8 @@ public class GridMap extends View {
         whiteTextPaint.setColor(getResources().getColor(R.color.white));
         whiteTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         whiteTextPaint.setTextSize(24);
-        obstacleColor.setColor(getResources().getColor(R.color.green_500));
+        obstacleColor.setColor(getResources().getColor(R.color.green_700));
+        obstacleColorTarget.setColor(getResources().getColor(R.color.lime));
         robotColor.setColor(getResources().getColor(R.color.teal_200));
         startColor.setColor(Color.CYAN);
         unexploredColor.setColor(getResources().getColor(R.color.green_200));
@@ -772,6 +775,7 @@ public class GridMap extends View {
                 }
                 else if(Integer.valueOf(targetId)>=10)
                 {
+                    canvas.drawRect(rect, obstacleColorTarget);
                     canvas.drawText(targetId, textX, textY, RedBoldPaint);
                 }
 
