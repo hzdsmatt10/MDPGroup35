@@ -97,7 +97,7 @@ public class GridMap extends View {
         whitePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         whitePaint.setColor(getResources().getColor(R.color.white));
         whiteBigPaint.setColor(getResources().getColor(R.color.white));
-        RedBoldPaint.setColor(getResources().getColor(R.color.blue));
+        RedBoldPaint.setColor(getResources().getColor(R.color.red));
         targetPaint.setColor(getResources().getColor(R.color.white));
 
         whitePaint.setTextSize(16);
@@ -112,7 +112,7 @@ public class GridMap extends View {
         whiteTextPaint.setColor(getResources().getColor(R.color.white));
         whiteTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         whiteTextPaint.setTextSize(24);
-        obstacleColor.setColor(getResources().getColor(R.color.green_700));
+        obstacleColor.setColor(getResources().getColor(R.color.green_500));
         robotColor.setColor(getResources().getColor(R.color.teal_200));
         startColor.setColor(Color.CYAN);
         unexploredColor.setColor(getResources().getColor(R.color.green_200));
