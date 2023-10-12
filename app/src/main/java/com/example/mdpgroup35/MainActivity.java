@@ -1,5 +1,6 @@
 package com.example.mdpgroup35;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -11,17 +12,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.Bluetooth.BluetoothActivity;
 import com.example.mdpgroup35.Fragments.FragmentMessage;
@@ -30,9 +29,10 @@ import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.Views.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+@RequiresApi(api = Build.VERSION_CODES.S)
 public class MainActivity extends AppCompatActivity {
     private static final int MY_BLUETOOTH_SCAN_PERMISSION_REQUEST = 123;
-    private static String[] PERMISSIONS_STORAGE = {
+    private static final String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -57,33 +57,22 @@ public class MainActivity extends AppCompatActivity {
     public static final String DEVICE_NAME = "deviceName";
     public static final String TOAST = "toast";
     private String connectedDevice;
-
     public static GridMap gridMap;
-    private Canvas canvas;
-
-
     static TextView xAxisTextView, yAxisTextView;
-
     private int[] tabIcons = {
             R.drawable.ic_baseline_message_24,
             R.drawable.ic_baseline_map_24,
             R.drawable.ic_baseline_control_camera_24,
             R.drawable.baseline_straighten_24
     };
-
-    ToggleButton startTimerBtn, exploreTypeBtn;
-    private Chronometer startTimer;
-    private boolean running;
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-            System.out.println(message.what);
+
             switch (message.what) {
                 case MESSAGE_STATE_CHANGED:
                     switch (message.arg1) {
                         case BluetoothUtils.STATE_NONE:
-                            setState("Not Connected");
-                            break;
                         case BluetoothUtils.STATE_LISTEN:
                             setState("Not Connected");
                             break;
@@ -102,20 +91,21 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case MESSAGE_READ:
                     String inputBuffer = (String) message.obj;
+
                     gridMap.handleBluetoothMessage(inputBuffer);
                     // Process response message
                     //onResponse(inputBuffer);
                     if (inputBuffer.equals("end")) {
 
                         FragmentRecalibrate.startTimer.stop();
-                        if(FragmentRecalibrate.startTimerBtn.isChecked()) {
+                        if (FragmentRecalibrate.startTimerBtn.isChecked()) {
                             FragmentRecalibrate.startTimerBtn.toggle();
                         }
                     }
                     FragmentMessage.addToAdapterReceivedMessages(connectedDevice + ": ", inputBuffer);
                     // int xaxe =0;
-                   // int yaxe =0;
-                  //  char direction='N';
+                    // int yaxe =0;
+                    //  char direction='N';
 
                     String[] parsed;
                     String header;
@@ -123,11 +113,11 @@ public class MainActivity extends AppCompatActivity {
                         ////this section might not need anymore
                         parsed = inputBuffer.split(" ");
                         //System.out.println("parsed[0] is " + parsed[0]);
-                       // xaxe = Integer.parseInt(parsed[2].substring(1,parsed[2].length()-1));
+                        // xaxe = Integer.parseInt(parsed[2].substring(1,parsed[2].length()-1));
 
-                       // yaxe = Integer.parseInt(parsed[3].substring(0,parsed[3].length()-1));
+                        // yaxe = Integer.parseInt(parsed[3].substring(0,parsed[3].length()-1));
 
-                       // int angle = Integer.parseInt(parsed[4].substring(0,parsed[4].length()-2));
+                        // int angle = Integer.parseInt(parsed[4].substring(0,parsed[4].length()-2));
 
 /*
                         if (angle==0)
@@ -155,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                         header = inputBuffer;
                     }
 
-                    System.out.println(header);
+
                     switch (header) {
                         case "ROBOT":
                             //if(parsed.length<)
@@ -164,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                             break;
                         case "TARGET":
-                            System.out.println("I am in Target");
+
                             gridMap.updateImageWithID(inputBuffer);
 
                             showLog("ENTER TARGET PARSER: " + inputBuffer);
@@ -186,29 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
                     break;
                 case MESSAGE_READ_STATUS:
-                    /*
-                    String inputBufferStatus = (String) message.obj;
-                    String inputBufferStatusExtra = null;
-                    String[] inputArray = inputBufferStatus.split("\\s*,\\s*");
-                    String[] inputArrayAdditional = null;
-
-                    if (inputArray.length > 5 && !inputBufferStatus.contains("STM")) {
-                        int index = inputBufferStatus.indexOf("AN", inputBufferStatus.indexOf("AN") + 1);
-                        inputBufferStatusExtra = inputBufferStatus.substring(index);
-                        inputBufferStatus = inputBufferStatus.substring(0, index);
-                        inputArray = inputBufferStatus.split("\\s*,\\s*");
-                        inputArrayAdditional = inputBufferStatusExtra.split("\\s*,\\s*");
-                    }
-                    if (inputBufferStatus.startsWith("AN") && running) {
-                        handleMessageRead(inputBufferStatus, inputArray);
-                        FragmentMessage.addToAdapterReceivedMessages(connectedDevice + ": ", inputBufferStatus);
-                    }
-                    if (inputBufferStatusExtra != null && inputBufferStatusExtra.startsWith("AN") && running) {
-                        handleMessageRead(inputBufferStatusExtra, inputArrayAdditional);
-                        FragmentMessage.addToAdapterReceivedMessages(connectedDevice + ": ", inputBufferStatusExtra);
-                    }
                     break;
-                    */
 
                 case MESSAGE_DEVICE_NAME:
                     connectedDevice = message.getData().getString(DEVICE_NAME);
@@ -221,95 +189,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     });
-/* //may need to reference
-    private void onResponseCapture(Response res) {
-        int allowance = Action.DISTANCE_ALLOWABLE;
-        Action a = null;
-        String coord = res.prevCoordinate != null ||
-                !res.prevCoordinate.isEmpty() ? res.prevCoordinate : "0,0,0";
-
-        String[] parsed = coord.split(",");
-        int col = Integer.parseInt(parsed[0]);
-        int row = Integer.parseInt(parsed[1]);
-        int dir = Integer.parseInt(parsed[2]);
-        State robotCoord = new State(col, row, dir);
-
-        String[] obstacleParsed = res.coordinate.split(",+");
-        int oCol = Integer.parseInt(obstacleParsed[0]);
-        int oRow = Integer.parseInt(obstacleParsed[1]);
-        int oDir = Integer.parseInt(obstacleParsed[2]);
-        State obstacleCoord = new State(oCol, oRow, oDir);
-
-        boolean fail = res.status != 1 || res.result.equalsIgnoreCase("10") || res.result.equalsIgnoreCase("-1");
-//res.status != 1 or res.rsults is 10 or -1, if any of these conditions met, proceeds to handle failure
-        // Get result from strategy and if it fails
-        if (res.action.contains(Action.STRATEGY) &&
-                res.action.split(":")[1].equalsIgnoreCase(Action.FORWARD) &&
-                fail) {
-
-            return;
-        }
-
-        // Run strategy if obstacle is not detected
-        // Do not run if it's a calibrate capture
-        if (!res.action.contains(Action.CALIBRATE) &&
-                !res.action.contains(Action.STRATEGY) &&
-                fail
-        ) {
-
-            return;
-        }
-
-        // Do not update if it's a calibrate capture
-        if (!res.action.contains(Action.CALIBRATE))
-            gridMap.updateImageWithID(res);
-
-        try {
-            // Do not correct if it's last obstacle
-            if (obstacleCoord.getCoord().equalsIgnoreCase(currentSeriesAction.data.get(currentSeriesAction.data.size() - 1).coordinate))
-                return;
-
-            // Correction
-            int correction = 0;
-            if (res.action.contains(Action.CALIBRATE))
-                // CALIBRATE:1 num is on second index
-                correction = Integer.parseInt(res.action.split(":")[1]);
-
-            // Might move right
-            if (res.distance < 0 && Math.abs(res.distance) > allowance) {
-                a = Action.slideToRight(robotCoord, correction + 1);
-            } else if (res.distance > allowance) { // Move left
-                a = Action.slideToLeft(robotCoord, correction + 1);
-            }
-
-
-    //    } catch (JSONException e) {
-      //      e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-*/
-/* //may need to reference
-    private void onResponse(String inputBuffer) {
-        Response res = null;
-        try {
-            res = Response.fromJSON(inputBuffer);
-
-            if (res.type.equalsIgnoreCase(Action.MOVE)) {
-
-            } else if (res.type.equalsIgnoreCase(Action.CAPTURE)) {
-                onResponseCapture(res);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
     private void setState(CharSequence subTitle) {
         showLog("Entering setBluetoothState");
         getSupportActionBar().setSubtitle(subTitle);
@@ -330,16 +209,8 @@ public class MainActivity extends AppCompatActivity {
         gridMap = findViewById(R.id.gridView);
         xAxisTextView = findViewById(R.id.xAxisTextView);
         yAxisTextView = findViewById(R.id.yAxisTextView);
-        // Timer
-        //startTimerBtn = findViewById(R.id.startTimerBtn);
-        //startTimer = findViewById(R.id.startTimer);
-        //exploreTypeBtn = findViewById(R.id.exploreTypeBtn);
-        //initStartTimer();
+
     }
-
-
-
-
     private void initBluetooth() {
         showLog("Entering initBluetooth");
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -354,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main_activity, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -378,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
     private void checkPermissions() {
         showLog("Entering checkPermissions");
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -398,7 +267,6 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
@@ -426,12 +294,11 @@ public class MainActivity extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
     private void enableBluetooth() {
         showLog("Entering enableBluetooth");
         if (!bluetoothAdapter.isEnabled()) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                System.out.println("The wrong place");
+
                 ActivityCompat.requestPermissions(
                         this,
                         PERMISSIONS_STORAGE,
@@ -442,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
             }
             bluetoothAdapter.enable();
         }
-        System.out.println("continuing");
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission not granted, request it
@@ -451,12 +318,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            System.out.println("continuing1 ");
+
             Intent discoveryIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoveryIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
             startActivity(discoveryIntent);
-        };
-        System.out.println("continuing2 ");
+        }
+        ;
+
 
         showLog("Exiting enableBluetooth");
     }
@@ -468,7 +336,6 @@ public class MainActivity extends AppCompatActivity {
             bluetoothUtils.stop();
         }
     }
-
 
     private void initLayout() {
         showLog("Entering initLayout");
@@ -488,15 +355,13 @@ public class MainActivity extends AppCompatActivity {
             } else if (position == 2) {
                 tab.setText("Controller");
                 tab.setIcon(tabIcons[position]);
-            }
-            else if(position ==3){
+            } else if (position == 3) {
                 tab.setText("Tasks");
                 tab.setIcon(tabIcons[position]);
             }
         }).attach();
         showLog("Exiting initLayout");
     }
-
     public static GridMap getGridMap() {
         return gridMap;
     }

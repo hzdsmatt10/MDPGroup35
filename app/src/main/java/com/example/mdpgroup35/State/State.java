@@ -17,29 +17,12 @@ public class State {
     public static final int DOWN = -90;
     //may need to change////////////////////////////////
 
-    public State(int x, int y, int dir) {
-        this.x = x;
-        this.y = y;
-        this.dir = dir;
-        this.id = "";
-        this.name = "";
-    }
-
     public State(int x, int y, String dir) {
         this.x = x;
         this.y = y;
         this.dirStr = dir;
         this.dir = compassToDirection(dir);
     }
-
-    public State(int x, int y, int dir, String id, String name) {
-        this.x = x;
-        this.y = y;
-        this.dir = dir;
-        this.id = id;
-        this.name = name;
-    }
-
 
     public static int compassToDirection(String dir) {
         if (dir.equalsIgnoreCase("S"))

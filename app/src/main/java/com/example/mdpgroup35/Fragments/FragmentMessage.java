@@ -2,7 +2,6 @@ package com.example.mdpgroup35.Fragments;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ public class FragmentMessage extends Fragment {
     private ImageButton deleteReceivedMessages;
     private static ArrayAdapter<String> adapterSentMessages;
     private static ArrayAdapter<String> adapterReceivedMessages;
-    private static final String TAG = "FragmentMessage";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,15 +37,12 @@ public class FragmentMessage extends Fragment {
 
         listViewSentMessages = root.findViewById(R.id.list_sent_messages);
         listViewSentMessages.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); //autoscrolling text
-
         listViewReceivedMessages = root.findViewById(R.id.list_received_messages);
         listViewReceivedMessages.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-
         edCreateMessage = root.findViewById(R.id.edit_enter_message);
         btnSendMessage = root.findViewById(R.id.btn_send_msg);
         deleteSentMessages = root.findViewById(R.id.deleteSentMessages);
         deleteReceivedMessages = root.findViewById(R.id.deleteReceivedMessages);
-
         adapterSentMessages = new ArrayAdapter<String>(getActivity(), R.layout.message_layout);
         listViewSentMessages.setAdapter(adapterSentMessages);
 

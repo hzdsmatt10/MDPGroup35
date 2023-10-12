@@ -1,22 +1,16 @@
 package com.example.mdpgroup35.Fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Checkable;
 import android.widget.Chronometer;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import androidx.fragment.app.Fragment;
-
 import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.MainActivity;
 import com.example.mdpgroup35.State.State;
@@ -28,7 +22,6 @@ public class FragmentRecalibrate extends Fragment{
     private Button send_coord;
     public static ToggleButton startTimerBtn, exploreTypeBtn;
     public static Chronometer startTimer;
-    private boolean running;
     GridMap gridMap;
 
 
@@ -66,18 +59,14 @@ public class FragmentRecalibrate extends Fragment{
         });
 
         // Set initial state of the timer and Bluetooth connection
-        running = false;
-        boolean isConnectedToBluetooth = false; // Set this based on your Bluetooth connection status
-
+        // Set this based on your Bluetooth connection status
         // Set click listener for the startTimerBtn
-
         return root;
     }
 
     private void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
     private void initStartTimer() { ////////////////////dealing with the timer
         showLog("Entering initStartTimer");
         startTimer.setFormat("%s");
@@ -113,24 +102,22 @@ public class FragmentRecalibrate extends Fragment{
                             System.out.println(sendingObstacleArray);
 
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
+                            //For fastest path
 
                         }
 
-
-
                         startTimer.setBase(SystemClock.elapsedRealtime());
                         startTimer.start();
-                        running = true;
 
 
                     } else if (startTimerBtn.getText().equals("START")) {
                         if (exploreTypeBtn.getText().equals("Image Exploration")) {
+                            //for image exploration
 
                         } else if (exploreTypeBtn.getText().equals("Fastest Path")) {
-
+//For fastest path
                         }
                         startTimer.stop();
-                        running = false;
                     }
                 } else {
                     startTimerBtn.toggle();
@@ -140,13 +127,6 @@ public class FragmentRecalibrate extends Fragment{
         });
         showLog("Exiting initStartTimer");
     }
-
-
-
-
-
-
-
         private void showLog (String message){
             Log.d("YourTag", message); // Use your desired tag, e.g., "YourTag"
         }

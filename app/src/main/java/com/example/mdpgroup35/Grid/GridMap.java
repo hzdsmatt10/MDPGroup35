@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -21,8 +20,6 @@ import androidx.annotation.Nullable;
 import com.example.mdpgroup35.State.State;
 import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.R;
-
-import com.example.mdpgroup35.RpiHelper.Response;
 
 
 import java.util.ArrayList;
@@ -38,6 +35,8 @@ public class GridMap extends View {
 
     private Paint whitePaint = new Paint();
     private Paint whiteBigPaint = new Paint();
+
+    private Paint RedBoldPaint= new Paint();
     private Paint targetPaint = new Paint();
     private Paint whiteTextPaint = new Paint();
 
@@ -84,10 +83,10 @@ public class GridMap extends View {
     private static float cellSize;
     private static final char[] direction = new char[]{'N', 'E', 'S', 'W'};
     public static Cell[][] cells;
-    private String messageToBot;
+
     private Map<Integer, String> obstacleTargetMapping = new HashMap<>();
     private boolean mapDrawn = false;
-    Paint currentPaint = whiteBigPaint;
+
 
     public GridMap(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -98,13 +97,16 @@ public class GridMap extends View {
         whitePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         whitePaint.setColor(getResources().getColor(R.color.white));
         whiteBigPaint.setColor(getResources().getColor(R.color.white));
+        RedBoldPaint.setColor(getResources().getColor(R.color.blue));
         targetPaint.setColor(getResources().getColor(R.color.white));
 
         whitePaint.setTextSize(16);
-        whiteBigPaint.setTextSize(16);
+        whiteBigPaint.setTextSize(14);
+        RedBoldPaint.setTextSize(18);
         targetPaint.setTextSize(100);
         targetPaint.setTextAlign(Paint.Align.CENTER);
         whiteBigPaint.setTextAlign(Paint.Align.CENTER);
+        RedBoldPaint.setTextAlign(Paint.Align.CENTER);
 
         //change Text size of the obstacle
         whiteTextPaint.setColor(getResources().getColor(R.color.white));
@@ -307,17 +309,7 @@ public class GridMap extends View {
         setWestObstacleStatus = westObstacleStatus;
     }
 
-    public boolean getSetWestObstacleStatus() {
-        return setWestObstacleStatus;
-    }
 
-    public void setExploredStatus(boolean status) {
-        setExploredStatus = status;
-    }
-
-    public boolean getExploredStatus() {
-        return setExploredStatus;
-    }
 
     public void setEditMapStatus(boolean status) {
         setEditStatus = status;
@@ -387,9 +379,7 @@ public class GridMap extends View {
         showLog("Exiting setCurCoord");
     }
 
-    public int[] getCurCoord() {
-        return curCoord;
-    }
+
 
     private void calculateDimension() {
         showLog("Phone Width is" + String.valueOf(getWidth()));
@@ -470,7 +460,6 @@ public class GridMap extends View {
         obstacleDirCoord[3] = String.valueOf(obstacleID);
         obstacleDirCoord[4] = "IMAGE_NULL";
         this.getObstacleDirectionCoord().add(obstacleDirCoord);
-
         row = convertRow(row);
         cells[col][row].setType("obstacleDirection");
         showLog("Exiting setObstacleDirectionCoordinate");
@@ -489,8 +478,6 @@ public class GridMap extends View {
 
         xAxisTextView.setText(String.valueOf(col - 1));
         yAxisTextView.setText(String.valueOf(row - 1));
-        //xAxisTextView.setText(String.valueOf(col));
-        //yAxisTextView.setText(String.valueOf(row));
         String dirText = String.format("%s", direction);
         dirTextView.setText(dirText);
     }
@@ -534,33 +521,6 @@ public class GridMap extends View {
 
     }
 
-    public void updateImageWithID(Response res) {
-        showLog("Entering updateImageWithID");
-        String direction;
-        boolean exist = false;
-
-        String[] parsed = res.coordinate.split(",");
-        int col = Integer.parseInt(parsed[0]) + 1;
-        int row = Integer.parseInt(parsed[1]) + 1;
-        int dir = Integer.parseInt(parsed[2]);
-        direction = State.directionToCompass(dir);
-
-        // Check if exist
-        for (String[] s : obstacleDirectionCoord) {
-            if (s[0].equalsIgnoreCase(String.valueOf(col)) && s[1].equalsIgnoreCase(String.valueOf(row)) && s[2].equalsIgnoreCase(direction)) {
-                exist = true;
-                break;
-            }
-        }
-
-        if (!exist) return;
-
-        String strImageID = res.result;
-        int obstacleId = obstacleDirectionCoord.size() + 1;
-
-        drawImageNumberCell(col, row, direction, String.valueOf(obstacleId), strImageID);
-        showLog("Drawing obstacle ID: " + strImageID + " at " + col + "," + row);
-    }
 
     public void updateRobot(String input) {
         canDrawRobot = true;
@@ -570,21 +530,6 @@ public class GridMap extends View {
         String direction = parsed[3];
         setOldRobotCoord(curCoord[0], curCoord[1]);
         setRobotDirection(direction);
-        setCurCoord(col, row, direction);
-        updateRobotAxis(col, row, direction);
-    }
-
-    public void updateRobot(Response res) {
-        canDrawRobot = true;
-        String[] parsed = res.coordinate.split(",");
-        int col = Integer.parseInt(parsed[0]) + 1;
-        int row = Integer.parseInt(parsed[1]) + 1;
-
-        String direction = State.directionToCompass(Integer.parseInt(parsed[2]));
-
-
-        setOldRobotCoord(curCoord[0], curCoord[1]);
-        setRobotDirection("N");
         setCurCoord(col, row, direction);
         updateRobotAxis(col, row, direction);
     }
@@ -766,21 +711,6 @@ public class GridMap extends View {
         Log.d(TAG, message);
     }
 
-    public void handleTargetMessage(String message) {
-        // Parse the "TARGET" message to extract Obstacle Number and Target ID
-        String[] parts = message.split(",");
-        if (parts.length == 3 && parts[0].equals("TARGET")) {
-            int obstacleNumber = Integer.parseInt(parts[1].trim());
-            String targetId = parts[2].trim();
-
-            // Update the obstacleTargetMapping with the new Target ID
-            obstacleTargetMapping.put(obstacleNumber, targetId);
-
-            // Trigger a redraw of the obstacles on the canvas
-            // You can call the method that redraws your obstacles here.
-            // For example: redrawObstacles();
-        }
-    }
 
     public void handleBluetoothMessage(String bluetoothMessage) {
         // Split the Bluetooth message by comma to extract the parts
@@ -796,6 +726,7 @@ public class GridMap extends View {
 
             // Iterate through obstacleDirectionCoord to find and update the targetId
             for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
+
                 if (obstacleDirectionCoord.get(i)[3].equals(originalTargetId)) {
                     // Update the targetId
                     obstacleDirectionCoord.get(i)[3] = newTargetId;
@@ -836,7 +767,13 @@ public class GridMap extends View {
 
                 float textX = cellSize * col + cellSize / 2;
                 float textY = cellSize * row + cellSize / 2;
-                canvas.drawText(targetId, textX, textY, whiteBigPaint);
+                if(Integer.valueOf(targetId)<10) {
+                    canvas.drawText(targetId, textX, textY, whiteBigPaint);
+                }
+                else if(Integer.valueOf(targetId)>=10)
+                {
+                    canvas.drawText(targetId, textX, textY, RedBoldPaint);
+                }
 
 
 
@@ -1012,6 +949,7 @@ public class GridMap extends View {
             }
             if (setEditStatus) {
 
+
                 for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
                     if (obstacleDirectionCoord.get(i)[0].equals(Integer.toString(column)) && obstacleDirectionCoord.get(i)[1].equals(Integer.toString(row))) {
                         prevObstacleDirectionCoord = new ArrayList<>();
@@ -1022,7 +960,7 @@ public class GridMap extends View {
                 }
 
                 for (int i = 0; i < startCoord.length; i++) {
-                    showLog(startCoord[0] + " " + column + " " + startCoord[1] + " " + row);
+                    showLog(startCoord[0] + " " +( Integer.valueOf(column) -1) + " " + startCoord[1] + " " + ( Integer.valueOf(row) -1) );
                     if (startCoord[0] == column && startCoord[1] == row) {
                         showLog("TRUE");
                         prevStartCoord[0] = startCoord[0];
@@ -1314,43 +1252,5 @@ public class GridMap extends View {
         this.invalidate();
     }
 
-    public void updateMap() {
-        showLog("Entering updateMap");
 
-        final String target = "PC";
-        String message;
-        int[] startCoord = this.getStartCoord();
-
-        if (startCoord[0] != -1) {
-            // Start Coord
-            message = target + "," + "Startpoint" + "," + (startCoord[0] - 1) + "," + (startCoord[1] - 1) + "," + getRobotDirection().toLowerCase();
-            BluetoothUtils.write(message.getBytes());
-            delay();
-        }
-
-        // All Directional Obstacle
-        for (int i = 0; i < obstacleDirectionCoord.size(); i++) {
-            int obstacleDirectionCoordCol = 0;
-            int obstacleDirectionCoordRow = 0;
-            try {
-                obstacleDirectionCoordCol = Integer.parseInt(obstacleDirectionCoord.get(i)[0]);
-                obstacleDirectionCoordRow = Integer.parseInt(obstacleDirectionCoord.get(i)[1]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            message = target + "," + "Obstacle" + "," + (obstacleDirectionCoordCol - 1) + "," + (obstacleDirectionCoordRow - 1) + "," + obstacleDirectionCoord.get(i)[2].toLowerCase();
-            BluetoothUtils.write(message.getBytes());
-            delay();
-        }
-
-        showLog("Exiting updateMap");
-    }
-
-    private void delay() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

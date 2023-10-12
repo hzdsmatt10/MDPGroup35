@@ -27,11 +27,8 @@ import android.util.Log;
 
 
 import com.example.mdpgroup35.MainActivity;
-import com.example.mdpgroup35.RpiHelper.Action;
-import com.example.mdpgroup35.RpiHelper.NewAction;
+import com.example.mdpgroup35.Actionables.NewAction;
 
-
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -347,24 +344,6 @@ attempts to establish a Bluetooth connection with a remote device using the sock
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////remove after finish up writeactions
-    public static void writeActions(Action action) { //this method is responsible for sending a series of Bluetooth messages/actions to a connected Bluetooth device.
-
-        try {
-            String headerFrame = action.toJSON(false); //It serializes the action object to a JSON string using action.toJSON(false).
-            BluetoothUtils.write(headerFrame.getBytes());
-            TimeUnit.MILLISECONDS.sleep(50);
-            // Send the rest of the frames
-            for (Action a : action.data) {
-                // 50 ms buffer time to fill the serial line
-                TimeUnit.MILLISECONDS.sleep(100);
-                BluetoothUtils.write(a.toJSON().getBytes());
-            }
-        } catch (JSONException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void writeNewActions(NewAction newaction) throws InterruptedException {
         System.out.println(newaction);

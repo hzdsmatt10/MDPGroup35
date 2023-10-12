@@ -1,9 +1,7 @@
 package com.example.mdpgroup35.Fragments;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +26,7 @@ public class FragmentMap extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_map, container, false);
-
         gridMap = MainActivity.getGridMap();
-
         //updateMapBtn = root.findViewById(R.id.updateMapBtn);
         resetMapBtn = root.findViewById(R.id.resetMapBtn);
         resetRobotBtn = root.findViewById(R.id.resetRobotBtn);

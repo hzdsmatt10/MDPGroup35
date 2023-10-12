@@ -12,7 +12,7 @@ import com.example.mdpgroup35.Bluetooth.BluetoothUtils;
 import com.example.mdpgroup35.Grid.GridMap;
 import com.example.mdpgroup35.MainActivity;
 import com.example.mdpgroup35.R;
-import com.example.mdpgroup35.RpiHelper.NewAction;
+import com.example.mdpgroup35.Actionables.NewAction;
 
 public class FragmentControl extends Fragment {
 
@@ -52,7 +52,6 @@ public class FragmentControl extends Fragment {
             @Override
             public void onClick(View view) {
                 if (BluetoothUtils.getState() == BluetoothUtils.STATE_CONNECTED) {
-
                         NewAction newaction = new NewAction(NewAction.MOVE,"F","C",25,0);
                         movementStatusTextView.setText("forward");
                         String s = newaction.convertToSTMFormat(newaction);
